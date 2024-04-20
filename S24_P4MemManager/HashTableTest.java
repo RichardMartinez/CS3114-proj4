@@ -21,9 +21,11 @@ public class HashTableTest extends TestCase {
     /**
      * Test the constructor
      */
-//    public void testConstructor() {
-//        int x = 1;
-//    }
+    public void testConstructor() {
+        assertEquals(table.getCapacity(), 8);
+        assertTrue(table.isEmpty());
+        assertEquals(table.getSize(), 0);
+    }
     
     /**
      * Test h1 hash

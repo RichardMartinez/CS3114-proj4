@@ -60,4 +60,28 @@ public class HashTable {
     public int h2(int k, int M) {
         return (((k / M) % (M / 2)) * 2) + 1;
     }
+    
+    /**
+     * Returns true if empty
+     * @return true if empty
+     */
+    public boolean isEmpty() {
+        return size == 0;
+    }
+    
+    /**
+     * Return the current size
+     * @return the size
+     */
+    public int getSize() {
+        return size;
+    }
+    
+    /**
+     * Return the current capacity
+     * @return the capacity
+     */
+    public int getCapacity() {
+        return capacity;
+    }
 }
