@@ -97,10 +97,9 @@ public class HashTable {
         // Assume error checking has been done,
         // Just do the insert
         
-        // TODO: What if inserting duplicate key??
-        // Change return type to bool -> true on success
-        
         // TODO: Check filled ratio, if > 0.50 -> resize
+        
+        // TODO: Collapse this into one while loop??
         
         // Get the home index
         int home_index = h1(key, capacity);
@@ -124,9 +123,9 @@ public class HashTable {
             // Either full or tombstone
             // If full, keep probing
             // If tombstone, stop probing insert here
-            if (table[probing_index].getState() == HashEntryState.TOMBSTONE) {
-                break;
-            }
+//            if (table[probing_index].getState() == HashEntryState.TOMBSTONE) {
+//                break;
+//            }
             
             // Here, check for duplicate keys, return false??
             if (table[probing_index].getKey() == key) {
@@ -171,11 +170,11 @@ public class HashTable {
         
         while (table[probing_index].getState() != HashEntryState.EMPTY) {
             // Either full or tombstone
-            if (table[probing_index].getState() == HashEntryState.TOMBSTONE) {
-                // Skip over it
-                probing_index = (probing_index + step_size) % capacity;
-                continue;
-            }
+//            if (table[probing_index].getState() == HashEntryState.TOMBSTONE) {
+//                // Skip over it
+//                probing_index = (probing_index + step_size) % capacity;
+//                continue;
+//            }
             
             // Here it must be full
             // Does the key match?

@@ -3,6 +3,9 @@
  * TODO: {Project Description Here}
  */
 
+import java.io.File;
+import java.io.IOException;
+
 /**
  * The class containing the main method.
  *
@@ -34,10 +37,24 @@ public class SemManager {
     /**
      * @param args
      *     Command line parameters
+     * @throws IOException 
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // This is the main file for the program.
         // Seminar dum = new Seminar();
         System.out.println("This is working MemManager!");
+
+        int initMemSize = Integer.parseInt(args[0]);
+        int initHashSize = Integer.parseInt(args[1]);
+        String commandFileName = args[2];
+        
+        File cmdFile = new File(commandFileName);
+
+        SeminarDB database = new SeminarDB(initMemSize, initHashSize);
+        CommandProcessor cmdProc = new CommandProcessor(database);
+        
+        cmdProc.readCmdFile(cmdFile);
+        
+//        int x = 1;
     }
 }

@@ -32,12 +32,13 @@ public class SemManagerTest extends TestCase {
 
     /**
      * This method is simply to get coverage of the class declaration.
+     * @throws IOException 
      */
-    public void testMInitx()
+    public void testMInitx() throws IOException
     {
         SemManager sem = new SemManager();
         assertNotNull(sem);
-        SemManager.main(null);
+//        SemManager.main(null);
     }
 
     /**

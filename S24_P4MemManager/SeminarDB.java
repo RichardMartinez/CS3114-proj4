@@ -11,6 +11,8 @@ public class SeminarDB
 {
     // private MemManager myMemman; // Implement Memory Manager class in a separate file
     // private Hash myHashTable; // Implement Hash table class in a separate file
+    
+    private HashTable table;
 
     /**
      * Create a new SeminarDB object.
@@ -26,6 +28,8 @@ public class SeminarDB
     {
         // myMemman = new MemManager(initMemSize);
         // myHashTable = new Hash(initHashSize);
+        
+        table = new HashTable(initHashSize);
     }
 
     // ----------------------------------------------------------
@@ -57,6 +61,9 @@ public class SeminarDB
         // Insert into memory manager -> Handle
         
         // Insert into hash table -> key = ID, value = Handle
+        
+        // TEMP: Insert null handles for now
+        table.insert(sID, null);
     }
 
     // ----------------------------------------------------------
