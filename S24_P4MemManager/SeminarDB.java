@@ -47,6 +47,16 @@ public class SeminarDB
         throws Exception
     {
         //TODO: Implement this method
+        
+        // If ID already exists, FAIL
+        
+        // Construct seminar object using params
+        
+        // Serialize into byte array
+        
+        // Insert into memory manager -> Handle
+        
+        // Insert into hash table -> key = ID, value = Handle
     }
 
     // ----------------------------------------------------------
@@ -59,6 +69,13 @@ public class SeminarDB
         throws IOException
     {
         //TODO: Implement this method
+        
+        // Check hash table -> Handle
+        // If ID does not exist, FAIL
+        
+        // Remove from memory manager if exists
+        
+        // Remove from hash table
     }
 
     // ----------------------------------------------------------
@@ -72,6 +89,15 @@ public class SeminarDB
         throws IOException, Exception
     {
         //TODO: Implement this method
+        
+        // Check hash table -> Handle
+        // If ID does not exist, FAIL
+        
+        // Get from memory manager -> byte array
+        
+        // De-serialize to Seminar object
+        
+        // Print all the stuff
     }
 
     // ----------------------------------------------------------
@@ -84,6 +110,10 @@ public class SeminarDB
         throws IOException
     {
         //TODO: Implement this method
+        
+        // Print all the stuff in the hash table
+        
+        // Return number of records in the table
         return 0;
     }
 
@@ -94,5 +124,7 @@ public class SeminarDB
     public void memmanprint()
     {
         //TODO: Implement this method
+        
+        // Print the freelist
     }
 }
