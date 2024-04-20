@@ -36,4 +36,28 @@ public class HashTable {
             table[i] = new HashEntry();
         }
     }
+    
+    /**
+     * First hash function h1(k, M)
+     * @param k
+     *      The integer to hash
+     * @param M
+     *      The size of the hash table
+     * @return the hashed integer
+     */
+    public int h1(int k, int M) {
+        return k % M;
+    }
+    
+    /**
+     * Second hash function h2(k, M)
+     * @param k
+     *      The integer to hash
+     * @param M
+     *      The size of the hash table
+     * @return the hashed integer
+     */
+    public int h2(int k, int M) {
+        return (((k / M) % (M / 2)) * 2) + 1;
+    }
 }
