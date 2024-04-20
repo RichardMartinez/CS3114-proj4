@@ -57,6 +57,8 @@ public class HashTableTest extends TestCase {
         Handle handle;
         boolean success;
         
+        assertTrue(table.isEmpty());
+        
         handle = new Handle(0, 0);
         success = table.insert(0, handle);
         assertTrue(success);
@@ -100,5 +102,18 @@ public class HashTableTest extends TestCase {
         
         handle = table.get(40);
         assertNull(handle);
+        
+        // Test contains
+        assertTrue(table.contains(0));
+        assertTrue(table.contains(3));
+        assertTrue(table.contains(8));
+        assertTrue(table.contains(11));
+        assertFalse(table.contains(21));
+        assertFalse(table.contains(40));
+        
+        // Size methods
+        assertEquals(table.getSize(), 4);
+        assertFalse(table.isEmpty());
+
     }
 }

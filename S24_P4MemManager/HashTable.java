@@ -190,4 +190,14 @@ public class HashTable {
         return null;
     }
     
+    /**
+     * Returns true if contains key
+     * @param key
+     *      The key to check
+     * @return true if contains
+     */
+    public boolean contains(int key) {
+        return get(key) != null;
+    }
+    
 }
