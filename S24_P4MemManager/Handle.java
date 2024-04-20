@@ -29,6 +29,13 @@ public class Handle {
     }
     
     /**
+     * Default constructor for Handle
+     */
+    public Handle() {
+        this(0, 0);
+    }
+    
+    /**
      * Returns the address
      * @return the address
      */

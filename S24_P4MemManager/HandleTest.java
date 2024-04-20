@@ -26,5 +26,15 @@ public class HandleTest extends TestCase {
         assertEquals(handle.getLength(), 20);
     }
     
+    /**
+     * Test the default constructor for Handle
+     */
+    public void testDefaultHandle() {
+        handle = new Handle();
+        
+        assertEquals(handle.getAddress(), 0);
+        assertEquals(handle.getLength(), 0);
+    }
+    
     // TODO: Test equals(Handle) method??
 }
