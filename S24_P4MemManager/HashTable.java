@@ -98,6 +98,7 @@ public class HashTable {
         
         // TODO: Check filled ratio, if > 0.50 -> resize
         
+        // Get the home index
         int home_index = h1(key, capacity);
         
         // If home index available, put it there
@@ -130,6 +131,52 @@ public class HashTable {
         table[probing_index] = new HashEntry(key, value);
         table[probing_index].setState(HashEntryState.FULL);
         size++;
+    }
+    
+    /**
+     * Returns the value associated with key if it exists
+     * @param key
+     *      The key to retrieve
+     * @return the value
+     */
+    public Handle get(int key) {
+        // Assume error checking, just do the get
+        
+        // Get the home index
+        int home_index = h1(key, capacity);
+        
+        // Check if its there
+        if (table[home_index].getState() == HashEntryState.FULL) {
+            if (table[home_index].getKey() == key) {
+                // Found it!!
+                return table[home_index].getValue();
+            }
+        }
+        
+        // Either it was empty, tombstone, or the key didn't match
+        // Do probing
+        int step_size = h2(key, capacity);
+        int probing_index = home_index;  // Need to check home_index for tombstone
+        
+        while (table[probing_index].getState() != HashEntryState.EMPTY) {
+            // Either full or tombstone
+            if (table[probing_index].getState() == HashEntryState.TOMBSTONE) {
+                // Skip over it
+                probing_index = (probing_index + step_size) % capacity;
+                continue;
+            }
+            
+            // Here it must be full
+            // Does the key match?
+            if (table[probing_index].getKey() == key) {
+                return table[probing_index].getValue();
+            }
+            
+            probing_index = (probing_index + step_size) % capacity;
+        }
+        
+        // At this point, we never found it
+        return null;
     }
     
 }

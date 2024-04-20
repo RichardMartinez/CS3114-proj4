@@ -67,5 +67,28 @@ public class HashTableTest extends TestCase {
         
         handle = new Handle(11, 11);
         table.insert(11, handle);
+        
+        // Test get
+        handle = table.get(0);
+        assertEquals(handle.getAddress(), 0);
+        assertEquals(handle.getAddress(), 0);
+        
+        handle = table.get(3);
+        assertEquals(handle.getAddress(), 3);
+        assertEquals(handle.getAddress(), 3);
+        
+        handle = table.get(8);
+        assertEquals(handle.getAddress(), 8);
+        assertEquals(handle.getAddress(), 8);
+        
+        handle = table.get(11);
+        assertEquals(handle.getAddress(), 11);
+        assertEquals(handle.getAddress(), 11);
+        
+        handle = table.get(21);
+        assertNull(handle);
+        
+        handle = table.get(40);
+        assertNull(handle);
     }
 }
