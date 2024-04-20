@@ -32,7 +32,7 @@ public class Handle {
      * Default constructor for Handle
      */
     public Handle() {
-        this(0, 0);
+        this(-1, -1);
     }
     
     /**

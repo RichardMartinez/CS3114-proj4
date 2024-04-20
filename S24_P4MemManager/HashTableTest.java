@@ -49,4 +49,23 @@ public class HashTableTest extends TestCase {
         assertEquals(table.h2(16, 8), 5);
         assertEquals(table.h2(24, 8), 7);
     }
+    
+    /**
+     * Test basic insert method
+     */
+    public void testBasicInsert() {
+        Handle handle;
+        
+        handle = new Handle(0, 0);
+        table.insert(0, handle);
+        
+        handle = new Handle(3, 3);
+        table.insert(3, handle);
+        
+        handle = new Handle(8, 8);
+        table.insert(8, handle);
+        
+        handle = new Handle(11, 11);
+        table.insert(11, handle);
+    }
 }

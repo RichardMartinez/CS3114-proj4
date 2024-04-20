@@ -32,8 +32,8 @@ public class HandleTest extends TestCase {
     public void testDefaultHandle() {
         handle = new Handle();
         
-        assertEquals(handle.getAddress(), 0);
-        assertEquals(handle.getLength(), 0);
+        assertEquals(handle.getAddress(), -1);
+        assertEquals(handle.getLength(), -1);
     }
     
     // TODO: Test equals(Handle) method??

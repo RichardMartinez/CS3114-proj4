@@ -40,8 +40,8 @@ public class HashEntryTest extends TestCase {
     public void testDefaultHashEntry() {
         entry = new HashEntry();
         assertEquals(entry.getKey(), -1);
-        assertEquals(entry.getValue().getAddress(), 0);
-        assertEquals(entry.getValue().getLength(), 0);
+        assertEquals(entry.getValue().getAddress(), -1);
+        assertEquals(entry.getValue().getLength(), -1);
         assertEquals(entry.getState(), HashEntryState.EMPTY);
     }
 }
