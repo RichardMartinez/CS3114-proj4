@@ -1,13 +1,13 @@
 
 /**
- * {Project Description Here}
+ * TODO: {Project Description Here}
  */
 
 /**
  * The class containing the main method.
  *
- * @author {Your Name Here}
- * @version {Put Something Here}
+ * @author Richard Martinez
+ * @version 2024-04-20
  */
 
 // On my honor:
@@ -37,7 +37,7 @@ public class SemManager {
      */
     public static void main(String[] args) {
         // This is the main file for the program.
-        Seminar dum = new Seminar();
+        // Seminar dum = new Seminar();
         System.out.println("This is working MemManager!");
     }
 }

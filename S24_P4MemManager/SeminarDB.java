@@ -4,8 +4,8 @@ import java.io.IOException;
  * Handle the Seminar database. This class processes commands by manipulating
  * the hash table.
  *
- * @author {Your Name Here}
- * @version {Put Something Here}
+ * @author Richard Martinez
+ * @version 2024-04-20
  */
 public class SeminarDB
 {

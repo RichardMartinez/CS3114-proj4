@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * Command file parser
  *
- * @author {Your Name Here}
- * @version {Put Something Here}
+ * @author Richard Martinez
+ * @version 2024-04-20
  */
 public class CommandProcessor
 {
