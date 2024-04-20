@@ -43,4 +43,6 @@ public class Handle {
     public int getLength() {
         return length;
     }
+    
+    // TODO: equals(Handle) method??
 }
