@@ -91,10 +91,14 @@ public class HashTable {
      *      The key to insert
      * @param value
      *      The value to insert
+     * @return true on success
      */
-    public void insert(int key, Handle value) {
+    public boolean insert(int key, Handle value) {
         // Assume error checking has been done,
         // Just do the insert
+        
+        // TODO: What if inserting duplicate key??
+        // Change return type to bool -> true on success
         
         // TODO: Check filled ratio, if > 0.50 -> resize
         
@@ -109,12 +113,12 @@ public class HashTable {
             table[home_index] = new HashEntry(key, value);
             table[home_index].setState(HashEntryState.FULL);
             size++;
-            return;
+            return true;
         }
         
         // It was taken, use h2 to get step size for linear probing
         int step_size = h2(key, capacity);  // This is double hashing
-        int probing_index = (home_index + step_size) % capacity;
+        int probing_index = home_index;
         
         while(table[probing_index].getState() != HashEntryState.EMPTY) {
             // Either full or tombstone
@@ -124,6 +128,12 @@ public class HashTable {
                 break;
             }
             
+            // Here, check for duplicate keys, return false??
+            if (table[probing_index].getKey() == key) {
+                // Duplicate key!!
+                return false;
+            }
+            
             probing_index = (probing_index + step_size) % capacity;
         }
         
@@ -131,6 +141,7 @@ public class HashTable {
         table[probing_index] = new HashEntry(key, value);
         table[probing_index].setState(HashEntryState.FULL);
         size++;
+        return true;
     }
     
     /**

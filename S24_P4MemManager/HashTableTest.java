@@ -55,18 +55,28 @@ public class HashTableTest extends TestCase {
      */
     public void testBasicInsert() {
         Handle handle;
+        boolean success;
         
         handle = new Handle(0, 0);
-        table.insert(0, handle);
+        success = table.insert(0, handle);
+        assertTrue(success);
         
         handle = new Handle(3, 3);
-        table.insert(3, handle);
+        success = table.insert(3, handle);
+        assertTrue(success);
         
         handle = new Handle(8, 8);
-        table.insert(8, handle);
+        success = table.insert(8, handle);
+        assertTrue(success);
         
         handle = new Handle(11, 11);
-        table.insert(11, handle);
+        success = table.insert(11, handle);
+        assertTrue(success);
+        
+        // Try inserting duplicate
+        handle = new Handle(10, 10);
+        success = table.insert(0, handle);
+        assertFalse(success);
         
         // Test get
         handle = table.get(0);
