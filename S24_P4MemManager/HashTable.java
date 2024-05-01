@@ -97,49 +97,39 @@ public class HashTable {
         // Assume error checking has been done,
         // Just do the insert
         
-        // TODO: Check filled ratio, if > 0.50 -> resize
+        // TODO: Check size and resize
         
-        // TODO: Collapse this into one while loop??
+        // Keep track of index and step
+        int index = h1(key, capacity);
+        int step = h2(key, capacity);
+        HashEntryState state = table[index].getState();
         
-        // Get the home index
-        int home_index = h1(key, capacity);
-        
-        // If home index available, put it there
-        if (table[home_index].getState() != HashEntryState.FULL) {
-            // Either empty or tombstone
-            // Available!!
-            // Put it there
-            table[home_index] = new HashEntry(key, value);
-            table[home_index].setState(HashEntryState.FULL);
-            size++;
-            return true;
-        }
-        
-        // It was taken, use h2 to get step size for linear probing
-        int step_size = h2(key, capacity);  // This is double hashing
-        int probing_index = home_index;
-        
-        while(table[probing_index].getState() != HashEntryState.EMPTY) {
+        // Keep going until you find a valid spot
+        while (state != HashEntryState.EMPTY) {
             // Either full or tombstone
-            // If full, keep probing
-            // If tombstone, stop probing insert here
-//            if (table[probing_index].getState() == HashEntryState.TOMBSTONE) {
-//                break;
-//            }
+            if (state == HashEntryState.TOMBSTONE) {
+                // We should be able to insert here
+                break;
+            }
             
-            // Here, check for duplicate keys, return false??
-            if (table[probing_index].getKey() == key) {
-                // Duplicate key!!
+            // This index is full
+            // Is there a duplicate key?
+            if (table[index].getKey() == key) {
+                // ERROR: Duplicate Key
                 return false;
             }
             
-            probing_index = (probing_index + step_size) % capacity;
+            // No duplicate key, but need to move on
+            index = (index + step) % capacity;
+            state = table[index].getState();
         }
         
-        // At this point, probing_index should be valid for insert
-        table[probing_index] = new HashEntry(key, value);
-        table[probing_index].setState(HashEntryState.FULL);
+        // Here is a valid index
+        HashEntry entry = new HashEntry(key, value);
+        entry.setState(HashEntryState.FULL);
+        table[index] = entry;
         size++;
+        
         return true;
     }
     

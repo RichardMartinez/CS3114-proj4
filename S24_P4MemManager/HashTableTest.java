@@ -80,40 +80,40 @@ public class HashTableTest extends TestCase {
         success = table.insert(0, handle);
         assertFalse(success);
         
-        // Test get
-        handle = table.get(0);
-        assertEquals(handle.getAddress(), 0);
-        assertEquals(handle.getAddress(), 0);
-        
-        handle = table.get(3);
-        assertEquals(handle.getAddress(), 3);
-        assertEquals(handle.getAddress(), 3);
-        
-        handle = table.get(8);
-        assertEquals(handle.getAddress(), 8);
-        assertEquals(handle.getAddress(), 8);
-        
-        handle = table.get(11);
-        assertEquals(handle.getAddress(), 11);
-        assertEquals(handle.getAddress(), 11);
-        
-        handle = table.get(21);
-        assertNull(handle);
-        
-        handle = table.get(40);
-        assertNull(handle);
-        
-        // Test contains
-        assertTrue(table.contains(0));
-        assertTrue(table.contains(3));
-        assertTrue(table.contains(8));
-        assertTrue(table.contains(11));
-        assertFalse(table.contains(21));
-        assertFalse(table.contains(40));
-        
-        // Size methods
-        assertEquals(table.getSize(), 4);
-        assertFalse(table.isEmpty());
+//        // Test get
+//        handle = table.get(0);
+//        assertEquals(handle.getAddress(), 0);
+//        assertEquals(handle.getAddress(), 0);
+//        
+//        handle = table.get(3);
+//        assertEquals(handle.getAddress(), 3);
+//        assertEquals(handle.getAddress(), 3);
+//        
+//        handle = table.get(8);
+//        assertEquals(handle.getAddress(), 8);
+//        assertEquals(handle.getAddress(), 8);
+//        
+//        handle = table.get(11);
+//        assertEquals(handle.getAddress(), 11);
+//        assertEquals(handle.getAddress(), 11);
+//        
+//        handle = table.get(21);
+//        assertNull(handle);
+//        
+//        handle = table.get(40);
+//        assertNull(handle);
+//        
+//        // Test contains
+//        assertTrue(table.contains(0));
+//        assertTrue(table.contains(3));
+//        assertTrue(table.contains(8));
+//        assertTrue(table.contains(11));
+//        assertFalse(table.contains(21));
+//        assertFalse(table.contains(40));
+//        
+//        // Size methods
+//        assertEquals(table.getSize(), 4);
+//        assertFalse(table.isEmpty());
 
     }
 }

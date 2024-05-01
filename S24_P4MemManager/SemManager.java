@@ -54,7 +54,5 @@ public class SemManager {
         CommandProcessor cmdProc = new CommandProcessor(database);
         
         cmdProc.readCmdFile(cmdFile);
-        
-//        int x = 1;
     }
 }
