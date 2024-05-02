@@ -598,4 +598,119 @@ public class HashTableTest extends TestCase {
         assertEquals(table.indexOf(12), 4);
     }
     
+    /**
+     * Test everything in a capstone
+     */
+    public void testCapstone() {
+        Handle handle;
+        int key;
+        boolean success;
+        
+        assertTrue(table.isEmpty());
+        assertEquals(table.getCapacity(), 8);
+        
+        key = 5;
+        handle = new Handle(key, key);
+        success = table.insert(key, handle);
+        assertTrue(success);
+        assertEquals(table.getSize(), 1);
+        assertEquals(table.getCapacity(), 8);
+        
+        key = 100;
+        handle = new Handle(key, key);
+        success = table.insert(key, handle);
+        assertTrue(success);
+        assertEquals(table.getSize(), 2);
+        assertEquals(table.getCapacity(), 8);
+        
+        key = 7;
+        handle = new Handle(key, key);
+        success = table.insert(key, handle);
+        assertTrue(success);
+        assertEquals(table.getSize(), 3);
+        assertEquals(table.getCapacity(), 8);
+        
+        key = 500;
+        handle = new Handle(key, key);
+        success = table.insert(key, handle);
+        assertTrue(success);
+        assertEquals(table.getSize(), 4);
+        assertEquals(table.getCapacity(), 8);
+        
+        // Attempt duplicate here
+        key = 500;
+        handle = new Handle(key, key);
+        success = table.insert(key, handle);
+        assertFalse(success);
+        assertEquals(table.getSize(), 4);
+        assertEquals(table.getCapacity(), 8);
+        
+        // Should resize here
+        key = 20;
+        handle = new Handle(key, key);
+        success = table.insert(key, handle);
+        assertTrue(success);
+        assertEquals(table.getSize(), 5);
+        assertEquals(table.getCapacity(), 16);
+        
+        // Do some gets
+        key = 20;
+        handle = table.get(key);
+        assertEquals(handle.getAddress(), key);
+        assertEquals(handle.getLength(), key);
+        
+        key = 500;
+        handle = table.get(key);
+        assertEquals(handle.getAddress(), key);
+        assertEquals(handle.getLength(), key);
+        
+        assertTrue(table.contains(20));
+        assertTrue(table.contains(500));
+        
+        // Remove non existent
+        key = 3;
+        success = table.remove(key);
+        assertFalse(success);
+        assertEquals(table.getSize(), 5);
+        assertEquals(table.getCapacity(), 16);
+        
+        // Double remove
+        key = 500;
+        success = table.remove(key);
+        assertTrue(success);
+        assertEquals(table.getSize(), 4);
+        assertEquals(table.getCapacity(), 16);
+        
+        key = 500;
+        success = table.remove(key);
+        assertFalse(success);
+        assertEquals(table.getSize(), 4);
+        assertEquals(table.getCapacity(), 16);
+        
+        // Simple remove
+        key = 20;
+        success = table.remove(key);
+        assertTrue(success);
+        assertEquals(table.getSize(), 3);
+        assertEquals(table.getCapacity(), 16);
+        
+        // Verify structure, size, capacity
+        assertFalse(table.contains(20));
+        assertFalse(table.contains(500));
+        
+        systemOut().clearHistory();
+        table.print();
+        String actual = systemOut().getHistory();
+        
+        String expected = "Hashtable:\n" +
+            "1: 100\n" +
+            "4: TOMBSTONE\n" +
+            "5: 5\n" +
+            "7: 7\n" +
+            "10: TOMBSTONE\n" +
+            "total records: 3\n";
+        
+        assertFuzzyEquals(actual, expected);
+    }
+    
 }
