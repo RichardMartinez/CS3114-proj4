@@ -694,9 +694,30 @@ public class HashTableTest extends TestCase {
         assertEquals(table.getSize(), 3);
         assertEquals(table.getCapacity(), 16);
         
-        // Verify structure, size, capacity
+        // Insert some more
+        key = 25;
+        handle = new Handle(key, key);
+        success = table.insert(key, handle);
+        assertTrue(success);
+        assertEquals(table.getSize(), 4);
+        assertEquals(table.getCapacity(), 16);
+        
+        key = 250;
+        handle = new Handle(key, key);
+        success = table.insert(key, handle);
+        assertTrue(success);
+        assertEquals(table.getSize(), 5);
+        assertEquals(table.getCapacity(), 16);
+        
+        // Verify structure
         assertFalse(table.contains(20));
         assertFalse(table.contains(500));
+        
+        assertTrue(table.contains(100));
+        assertTrue(table.contains(5));
+        assertTrue(table.contains(7));
+        assertTrue(table.contains(25));
+        assertTrue(table.contains(250));
         
         systemOut().clearHistory();
         table.print();
@@ -707,8 +728,9 @@ public class HashTableTest extends TestCase {
             "4: TOMBSTONE\n" +
             "5: 5\n" +
             "7: 7\n" +
-            "10: TOMBSTONE\n" +
-            "total records: 3\n";
+            "9: 25\n" +
+            "10: 250\n" +
+            "total records: 5\n";
         
         assertFuzzyEquals(actual, expected);
     }

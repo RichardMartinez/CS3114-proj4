@@ -59,6 +59,20 @@ public class MemoryManagerTest extends TestCase {
         
         result = memory.nextPow2(1000);
         assertEquals(result, 10);
-        
     }
+    
+    /**
+     * Verify the structure of the initial FBL
+     */
+    public void testInitialFBL() {
+        systemOut().clearHistory();
+        memory.print();
+        String actual = systemOut().getHistory();
+        
+        String expected = "Freeblock List:\n" +
+            "512: 0\n";
+        
+        assertFuzzyEquals(actual, expected);
+    }
+    
 }
