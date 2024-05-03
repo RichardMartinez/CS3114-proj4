@@ -321,20 +321,70 @@ public class MemoryManagerTest extends TestCase {
     }
     
     /**
+     * Test the are buddies method
+     */
+    public void testAreBuddies() {
+        int b1start;
+        int b1size;
+        int b2start;
+        int b2size;
+        
+        b1start = 0;
+        b1size = 32;
+        b2start = 32;
+        b2size = 32;
+        assertTrue(memory.areBuddies(b1start, b1size, b2start, b2size));
+        
+        // Different sizes are not buddies
+        b1start = 0;
+        b1size = 32;
+        b2start = 32;
+        b2size = 16;
+        assertFalse(memory.areBuddies(b1start, b1size, b2start, b2size));
+        
+        // Tests from piazza
+        b1start = 0;
+        b1size = 4;
+        b2start = 4;
+        b2size = 4;
+        assertTrue(memory.areBuddies(b1start, b1size, b2start, b2size));
+        
+        b1start = 8;
+        b1size = 4;
+        b2start = 12;
+        b2size = 4;
+        assertTrue(memory.areBuddies(b1start, b1size, b2start, b2size));
+        
+        b1start = 4;
+        b1size = 4;
+        b2start = 8;
+        b2size = 4;
+        assertFalse(memory.areBuddies(b1start, b1size, b2start, b2size));
+    }
+    
+    /**
      * Test resizing an empty memory
      */
-//    public void testBasicResize() {
-//        memory = new MemoryManager(128);
-//        
-//        System.out.println("BEFORE BASIC RESIZE");
-//        memory.print();
-//        
-//        // Resize
-//        memory.resize();
-//        
-//        System.out.println("AFTER BASIC RESIZE");
-//        memory.print();
-//    }
+    public void testEmptyResize() {
+        memory = new MemoryManager(128);
+        
+        // Resize and Merge
+        memory.resize();
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        String actual = systemOut().getHistory();
+        
+        String expected = "Freeblock List:\n" +
+            "256: 0\n";
+        
+        assertFuzzyEquals(actual, expected);
+    }
+    
+    // TODO: Test auto resize on insert too big (blockN > this.N)
+    
+    // TODO: Test auto resize on insert no valid free block (internal frag.)
     
     
     

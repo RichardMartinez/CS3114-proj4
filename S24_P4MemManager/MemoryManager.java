@@ -26,6 +26,7 @@ public class MemoryManager {
     private ArrayList<ArrayList<Integer>> freeblocklist;
     
     // Used and free bytes
+    // TODO: Remove used bytes??
     private int usedbytes;
     private int freebytes;
     
@@ -106,6 +107,10 @@ public class MemoryManager {
         Handle handle = new Handle(position, size);
         return handle;
     }
+    
+    // TODO: Implement remove here
+    
+    // TODO: Implement get here
         
     /**
      * Splits the free block list until a blockN is available
@@ -151,6 +156,66 @@ public class MemoryManager {
         // At this point, blockN sublist has at least one available block
     }
     
+    /**
+     * Merge all buddies together and propagate through all sizes
+     */
+    public void merge() {
+        // For each size in FBL
+        // No need to try to merge last level
+        for (int i = 0; i <= this.N - 1; i++) {
+            ArrayList<Integer> sublist = freeblocklist.get(i);
+            
+            // Ignore empty sublists
+            if (sublist.size() == 0) {
+                continue;
+            }
+            
+            // Call helper function
+            mergehelp(i);
+        }
+    }
+    
+    /**
+     * This is a helper method factored out of merge
+     * to help readability
+     * @param i
+     *      The current loop iteration inside merge
+     */
+    public void mergehelp(int i) {
+        // If buddies in sublist, merge to i+1
+        // Can never have more than one pair of buddies in a single pass
+        
+        int blocksize = raiseToPow2(i);
+        ArrayList<Integer> sublist = freeblocklist.get(i);
+        
+        // For each block in sublist
+        // No need to try to merge last block
+        // Insight: Two buddies will ALWAYS be next to each other
+        // because the array is sorted (b2Index = b1Index + 1)
+        for (int j = 0; j < sublist.size() - 1; j++) {
+            int position = sublist.get(j);
+            int buddyPos = getBuddyPos(position, blocksize);
+            
+            int b1index = j;
+            int b2index = j + 1;
+            
+            // BuddyPos should be in j+1
+            if (sublist.get(b2index) == buddyPos) {
+                // Found the buddy, let's merge
+                ArrayList<Integer> nextList = freeblocklist.get(i + 1);
+                
+                // Remove b2
+                sublist.remove(b2index);
+                
+                // Move b1 to next list
+                addToListSorted(nextList, position);
+                sublist.remove(b1index);
+                
+                // Only one merge to handle max, so return to save time
+                return;
+            }
+        }
+    }
     
     /**
      * Adds the value to the list to ensure it stays sorted
@@ -302,7 +367,8 @@ public class MemoryManager {
         capacity = new_capacity;
         N += 1;
         
-        // TODO: Potentially merge here??
+        // Merge here
+        merge();
     }
     
 }
