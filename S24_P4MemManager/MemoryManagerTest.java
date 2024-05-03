@@ -405,6 +405,8 @@ public class MemoryManagerTest extends TestCase {
         
         assertFuzzyEquals(actual, expected);
         
+        assertEquals(memory.numFreeBytes(), 256);
+        
         // Insert 256 bytes
         size = 256;
         space = new byte[size];
@@ -422,6 +424,8 @@ public class MemoryManagerTest extends TestCase {
         
         assertFuzzyEquals(actual, expected);
         
+        assertEquals(memory.numFreeBytes(), 0);
+        
         // Remove it
         memory.remove(handle);
         
@@ -434,26 +438,257 @@ public class MemoryManagerTest extends TestCase {
             "256: 0\n";
         
         assertFuzzyEquals(actual, expected);
+        
+        assertEquals(memory.numFreeBytes(), 256);
     }
     
     /**
      * Same thing, only half memory
      */
-//    public void testHalfRemove() {
-//        
-//    }
+    public void testHalfRemove() {
+        memory = new MemoryManager(256);
+        
+        int size;
+        byte[] space;
+        Handle handle;
+        
+        String actual;
+        String expected;
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        
+        expected = "Freeblock List:\n" +
+            "256: 0\n";
+        
+        assertFuzzyEquals(actual, expected);
+        
+        assertEquals(memory.numFreeBytes(), 256);
+        
+        // Insert 128 bytes
+        size = 128;
+        space = new byte[size];
+        handle = memory.insert(space, size);
+        assertEquals(handle.getAddress(), 0);
+        assertEquals(handle.getLength(), size);
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        
+        expected = "Freeblock List:\n" +
+            "128: 128\n";
+        
+        assertFuzzyEquals(actual, expected);
+        
+        assertEquals(memory.numFreeBytes(), 128);
+        
+        // Remove it
+        memory.remove(handle);
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        
+        expected = "Freeblock List:\n" +
+            "256: 0\n";
+        
+        assertFuzzyEquals(actual, expected);
+        
+        assertEquals(memory.numFreeBytes(), 256);
+    }
+    
+    /**
+     * Test removing with a bunch of merges
+     */
+    public void testRemoveAllTheWay() {
+        memory = new MemoryManager(256);
+        
+        int size;
+        byte[] space;
+        Handle handle;
+        
+        String actual;
+        String expected;
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        
+        expected = "Freeblock List:\n" +
+            "256: 0\n";
+        
+        assertFuzzyEquals(actual, expected);
+        
+        assertEquals(memory.numFreeBytes(), 256);
+        
+        // Insert 1 byte
+        size = 1;
+        space = new byte[size];
+        handle = memory.insert(space, size);
+        assertEquals(handle.getAddress(), 0);
+        assertEquals(handle.getLength(), size);
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        
+        expected = "Freeblock List:\n" +
+            "1: 1\n" +
+            "2: 2\n" +
+            "4: 4\n" +
+            "8: 8\n" +
+            "16: 16\n" +
+            "32: 32\n" +
+            "64: 64\n" +
+            "128: 128\n";
+        
+        assertFuzzyEquals(actual, expected);
+        
+        assertEquals(memory.numFreeBytes(), 255);
+        
+        // Remove it
+        memory.remove(handle);
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        
+        expected = "Freeblock List:\n" +
+            "256: 0\n";
+        
+        assertFuzzyEquals(actual, expected);
+        
+        assertEquals(memory.numFreeBytes(), 256);
+    }
+    
+    /**
+     * Test inserting and removing non power of 2 sizes
+     */
+    public void testNonPow2Sizes() {
+        memory = new MemoryManager(256);
+        
+        int size;
+        byte[] space;
+        Handle handle;
+        
+        String actual;
+        String expected;
+        
+        // Insert 10 bytes -> blocksize 16
+        size = 10;
+        space = new byte[size];
+        handle = memory.insert(space, size);
+        assertEquals(handle.getAddress(), 0);
+        assertEquals(handle.getLength(), size);
+        assertEquals(memory.numFreeBytes(), 240);
+        
+        // Insert 30 bytes -> blocksize 32
+        size = 30;
+        space = new byte[size];
+        handle = memory.insert(space, size);
+        assertEquals(handle.getAddress(), 32);
+        assertEquals(handle.getLength(), size);
+        assertEquals(memory.numFreeBytes(), 208);
+        
+        // Insert 60 bytes -> blocksize 64
+        size = 60;
+        space = new byte[size];
+        handle = memory.insert(space, size);
+        assertEquals(handle.getAddress(), 64);
+        assertEquals(handle.getLength(), size);
+        assertEquals(memory.numFreeBytes(), 144);
+        
+        // Insert 61 bytes -> blocksize 64
+        size = 61;
+        space = new byte[size];
+        handle = memory.insert(space, size);
+        assertEquals(handle.getAddress(), 128);
+        assertEquals(handle.getLength(), size);
+        assertEquals(memory.numFreeBytes(), 80);
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        
+        expected = "Freeblock List:\n" +
+            "16: 16\n" +
+            "64: 192\n";
+        
+        assertFuzzyEquals(actual, expected);
+        
+        // Start removing stuff
+        
+        // Remove 10
+        handle = new Handle(0, 10);
+        memory.remove(handle);
+        assertEquals(memory.numFreeBytes(), 96);
+        
+        // Verify Structure
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        expected = "Freeblock List:\n" +
+            "32: 0\n" +
+            "64: 192\n";
+        assertFuzzyEquals(actual, expected);
+        
+        // Remove 60
+        handle = new Handle(64, 60);
+        memory.remove(handle);
+        assertEquals(memory.numFreeBytes(), 160);
+        
+        // Verify Structure
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        expected = "Freeblock List:\n" +
+            "32: 0\n" +
+            "64: 64 192\n";
+        assertFuzzyEquals(actual, expected);
+        
+        // Remove 61
+        handle = new Handle(128, 61);
+        memory.remove(handle);
+        assertEquals(memory.numFreeBytes(), 224);
+        
+        // Verify Structure
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        expected = "Freeblock List:\n" +
+            "32: 0\n" +
+            "64: 64\n" +
+            "128: 128\n";
+        assertFuzzyEquals(actual, expected);
+        
+        // Remove 30
+        handle = new Handle(32, 30);
+        memory.remove(handle);
+        assertEquals(memory.numFreeBytes(), 256);
+        
+        // Verify Structure
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        expected = "Freeblock List:\n" +
+            "256: 0\n";
+        assertFuzzyEquals(actual, expected);
+    }
     
     // TODO: Test auto resize on insert too big (blockN > this.N)
     
     // TODO: Test auto resize on insert no valid free block (internal frag.)
     
     // TODO: Test adding non power of two sizes
-    
-    // TODO: Test remove
-    
-    // TODO: Test auto merge once
-    
-    // TODO: Test auto merge twice
     
     // TODO: Test get
     

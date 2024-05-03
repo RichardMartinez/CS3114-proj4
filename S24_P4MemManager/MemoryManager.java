@@ -69,7 +69,7 @@ public class MemoryManager {
         // Assume error checking, just do the insert
         
         int blockN = nextPow2(size);
-        // int blocksize = raiseToPow2(blockN);
+        int blocksize = raiseToPow2(blockN);
 
         // TODO: Check size and resize
         
@@ -93,7 +93,7 @@ public class MemoryManager {
         for (int i = 0; i < size; i++) {
             memory[position + i] = space[i];
         }
-        freebytes -= size;
+        freebytes -= blocksize;
         
         // Remove block from FBL
         sublist.remove(0);
@@ -102,8 +102,6 @@ public class MemoryManager {
         Handle handle = new Handle(position, size);
         return handle;
     }
-    
-    // TODO: Implement remove here
     
     /**
      * Frees the specified block in memory
@@ -312,6 +310,15 @@ public class MemoryManager {
         return (b1start | b1size) == (b2start | b2size);
     }
     
+    
+    /**
+     * Returns the number of free bytes
+     * @return freebytes
+     */
+    public int numFreeBytes() {
+        return freebytes;
+    }
+    
     /**
      * Print the free block list to output
      */
@@ -374,7 +381,6 @@ public class MemoryManager {
         // Install new array and update stats vars
         memory = new_memory;
         freebytes += capacity;
-        // usedbytes unchanged
         
         // Update FBL
         freeblocklist.add(new ArrayList<Integer>());
