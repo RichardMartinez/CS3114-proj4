@@ -382,9 +382,82 @@ public class MemoryManagerTest extends TestCase {
         assertFuzzyEquals(actual, expected);
     }
     
+    /**
+     * Test adding whole memory, remove whole memory
+     */
+    public void testBasicRemove() {
+        memory = new MemoryManager(256);
+        
+        int size;
+        byte[] space;
+        Handle handle;
+        
+        String actual;
+        String expected;
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        
+        expected = "Freeblock List:\n" +
+            "256: 0\n";
+        
+        assertFuzzyEquals(actual, expected);
+        
+        // Insert 256 bytes
+        size = 256;
+        space = new byte[size];
+        handle = memory.insert(space, size);
+        assertEquals(handle.getAddress(), 0);
+        assertEquals(handle.getLength(), size);
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        
+        expected = "Freeblock List:\n" +
+            "There are no freeblocks in the memory pool\n";
+        
+        assertFuzzyEquals(actual, expected);
+        
+        // Remove it
+        memory.remove(handle);
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        
+        expected = "Freeblock List:\n" +
+            "256: 0\n";
+        
+        assertFuzzyEquals(actual, expected);
+    }
+    
+    /**
+     * Same thing, only half memory
+     */
+//    public void testHalfRemove() {
+//        
+//    }
+    
     // TODO: Test auto resize on insert too big (blockN > this.N)
     
     // TODO: Test auto resize on insert no valid free block (internal frag.)
+    
+    // TODO: Test adding non power of two sizes
+    
+    // TODO: Test remove
+    
+    // TODO: Test auto merge once
+    
+    // TODO: Test auto merge twice
+    
+    // TODO: Test get
+    
+    // TODO: Test capstone
     
     
     

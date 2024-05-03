@@ -25,9 +25,7 @@ public class MemoryManager {
     // The free block list
     private ArrayList<ArrayList<Integer>> freeblocklist;
     
-    // Used and free bytes
-    // TODO: Remove used bytes??
-    private int usedbytes;
+    // Number of free bytes
     private int freebytes;
     
     /**
@@ -40,8 +38,6 @@ public class MemoryManager {
         // Save capacity
         this.capacity = capacity;
         this.N = nextPow2(capacity);
-        
-        this.usedbytes = 0;
         this.freebytes = capacity;
         
         // Init memory array
@@ -98,7 +94,6 @@ public class MemoryManager {
             memory[position + i] = space[i];
         }
         freebytes -= size;
-        usedbytes += size;
         
         // Remove block from FBL
         sublist.remove(0);
@@ -109,6 +104,28 @@ public class MemoryManager {
     }
     
     // TODO: Implement remove here
+    
+    /**
+     * Frees the specified block in memory
+     * @param handle
+     *      The handle representing the block
+     */
+    public void remove(Handle handle) {
+        // Assume error checking, just do the remove
+        
+        // Give the block back to FBL
+        int position = handle.getAddress();
+        int length = handle.getLength();
+        int blockN = nextPow2(length);
+        int blocksize = raiseToPow2(blockN);
+        
+        ArrayList<Integer> sublist = freeblocklist.get(blockN);
+        addToListSorted(sublist, position);
+        freebytes += blocksize;
+        
+        // Call merge
+        merge();
+    }
     
     // TODO: Implement get here
         
