@@ -71,6 +71,11 @@ public class HashTableTest extends TestCase {
         success = table.insert(8, handle);
         assertTrue(success);
         
+        // Try inserting duplicate NO resize
+        handle = new Handle(10, 10);
+        success = table.insert(8, handle);
+        assertFalse(success);
+        
         handle = new Handle(11, 11);
         success = table.insert(11, handle);
         assertTrue(success);
@@ -78,7 +83,7 @@ public class HashTableTest extends TestCase {
         assertEquals(table.getSize(), 4);
         assertEquals(table.getCapacity(), 8);
         
-        // Try inserting duplicate
+        // Try inserting duplicate w/ potential resize
         handle = new Handle(10, 10);
         success = table.insert(0, handle);
         assertFalse(success);

@@ -71,40 +71,106 @@ public class MemoryManager {
         // Handle returned: start address, actual length of record
         // Assume error checking, just do the insert
         
+        int blockN = nextPow2(size);
+        // int blocksize = raiseToPow2(blockN);
+
         // TODO: Check size and resize
         
-//        int blockN = nextPow2(size);
-//        int blocksize = raiseToPow2(blockN);
+        // Here, we are guaranteed enough space
         
-        // Do we have a block of this size?
-        // YES -> Put it there
-        // NO -> Split in half until correct size -> Put it there
-        // What to do if no suitable block? -> Resize -> Insert
+        // Check if we have a free block in blockN
+        ArrayList<Integer> sublist = freeblocklist.get(blockN);
         
-        // Return Handle
+        if (sublist.size() == 0) {
+            // Native block size not available
+            // Split here
+            split(blockN);
+        }
         
-        ///// FOR NOW ASSUME INSERT FULL SIZE (512)
+        // At this point, native block size is available
+        // Insert is smallest position
+        // Sorted list -> smallest position is index 0
+        int position = sublist.get(0);
         
-//        ArrayList<Integer> sublist = freeblocklist.get(blockN);
-//        // Assume it has one element (0)
-//        
-//        int position = sublist.get(0);
-//        
-//        // This is remove(index=0)
-//        sublist.remove(0);
-//        
-//        usedbytes += blocksize;
-//        freebytes -= blocksize;
-//        
-//        Handle handle = new Handle(position, blocksize);
-//        
-//        return handle;
+        // Copy space array into memory array
+        for (int i = 0; i < size; i++) {
+            memory[position + i] = space[i];
+        }
+        freebytes -= size;
+        usedbytes += size;
         
-        /////
+        // Remove block from FBL
+        sublist.remove(0);
         
+        // Build and return the handle
+        Handle handle = new Handle(position, size);
+        return handle;
+    }
         
+    /**
+     * Splits the free block list until a blockN is available
+     * @param blockN
+     *      The target blockN to make
+     */
+    public void split(int blockN) {
+        // Known sublist at blockN is empty when calling this
+        // Known there is space somewhere below blockN
+        // because resizing always happens first
         
-        return null;
+        // Find sublist below blockN that has space (guaranteed)
+        int i;
+        for (i = blockN + 1; i <= this.N; i++) {
+            ArrayList<Integer> sublist = freeblocklist.get(i);
+            if (sublist.size() > 0) {
+                break;
+            }
+        }
+        
+        // What if it didn't find it?
+        // That should never happen
+        
+        // At this point, i is now the index with next highest size        
+        // Keep splitting until blockN size is not zero
+        while (freeblocklist.get(blockN).size() == 0) {
+            // Split level i, keep sorted order
+            ArrayList<Integer> sublist = freeblocklist.get(i);
+            
+            // Pop front value
+            int position = sublist.get(0);
+            sublist.remove(0);
+            
+            // Add two values to previous sublist
+            ArrayList<Integer> prevSubList = freeblocklist.get(i - 1);
+            int prevBlockSize = raiseToPow2(i - 1);
+            
+            addToListSorted(prevSubList, position);
+            addToListSorted(prevSubList, position + prevBlockSize);
+            
+            i--;
+        }
+        // At this point, blockN sublist has at least one available block
+    }
+    
+    
+    /**
+     * Adds the value to the list to ensure it stays sorted
+     * @param list
+     *      The list to add to
+     * @param value
+     *      The value to add
+     */
+    public void addToListSorted(ArrayList<Integer> list, int value) {
+        int i;
+        
+        for (i = 0; i < list.size(); i++) {
+            if (value < list.get(i)) {
+                list.add(i, value);
+                return;
+            }
+        }
+        
+        // It should go at the end
+        list.add(value);
     }
     
     /**

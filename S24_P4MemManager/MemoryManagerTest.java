@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import student.TestCase;
 
 /**
@@ -74,5 +75,144 @@ public class MemoryManagerTest extends TestCase {
         
         assertFuzzyEquals(actual, expected);
     }
+    
+    /**
+     * Test the sorted add method
+     */
+    public void testAddToListSorted() {
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        
+        memory.addToListSorted(list, 0);
+        memory.addToListSorted(list, 4);
+        memory.addToListSorted(list, 3);
+        memory.addToListSorted(list, 5);
+        memory.addToListSorted(list, 11);
+        memory.addToListSorted(list, 7);
+        memory.addToListSorted(list, 20);
+        memory.addToListSorted(list, 15);
+        
+        // Assert it is sorted
+        for (int i = 0; i < list.size() - 1; i++) {
+            assertTrue(list.get(i) < list.get(i+1));
+        }
+    }
+    
+    /**
+     * Test a simple split
+     */
+    public void testOneSplit() {
+        memory = new MemoryManager(128);
+        
+        // Do the split
+        int targetBlockSize = 64;
+        int blockN = memory.nextPow2(targetBlockSize);
+        memory.split(blockN);
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        String actual = systemOut().getHistory();
+        
+        String expected = "Freeblock List:\n" +
+            "64: 0 64\n";
+        
+        assertFuzzyEquals(actual, expected);
+    }
+    
+    /**
+     * Test splitting twice
+     */
+    public void testTwoSplits() {
+        memory = new MemoryManager(128);
+        
+        // Do the split
+        int targetBlockSize = 32;
+        int blockN = memory.nextPow2(targetBlockSize);
+        memory.split(blockN);
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        String actual = systemOut().getHistory();
+        
+        String expected = "Freeblock List:\n" +
+            "32: 0 32\n" +
+            "64: 64\n";
+        
+        assertFuzzyEquals(actual, expected);
+    }
+    
+    /**
+     * Test splitting all the way to N=0
+     */
+    public void testSplitAllTheWay() {
+        memory = new MemoryManager(128);
+        
+        // Do the split
+        int targetBlockSize = 1;
+        int blockN = memory.nextPow2(targetBlockSize);
+        memory.split(blockN);
+        
+//        System.out.println("AFTER SPLIT ALL");
+//        memory.print();
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        String actual = systemOut().getHistory();
+        
+        String expected = "Freeblock List:\n" +
+            "1: 0 1\n" +
+            "2: 2\n" +
+            "4: 4\n" +
+            "8: 8\n" +
+            "16: 16\n" +
+            "32: 32\n" +
+            "64: 64\n";
+        
+        assertFuzzyEquals(actual, expected);
+    }
+    
+    /**
+     * Test inserting and taking up all the space
+     */
+    public void testBasicInsert() {
+        memory = new MemoryManager(128);
+        
+        byte[] space = new byte[128];
+        int size = 128;
+        
+        Handle handle;
+        handle = memory.insert(space, size);
+        assertEquals(handle.getAddress(), 0);
+        assertEquals(handle.getLength(), 128);
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        String actual = systemOut().getHistory();
+        
+        String expected = "Freeblock List:\n" +
+            "There are no freeblocks in the memory pool\n";
+        
+        assertFuzzyEquals(actual, expected);
+    }
+    
+    
+    // TODO: Split at position != 0
+    /**
+     * Test splitting at a non-zero position
+     */
+//    public void testSplitAtPositionNonZero() {
+//        memory = new MemoryManager(128);
+//        
+//        // Allocate 64 bytes
+//        // Should split once at position 0
+//        
+//        // Allocate 16 bytes
+//        // Should split twice at position 64
+//    }
+    
+    
     
 }
