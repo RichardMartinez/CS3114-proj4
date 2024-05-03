@@ -199,6 +199,38 @@ public class MemoryManager {
     }
     
     /**
+     * Returns the buddy position give a free block
+     * Only the position is returned, size is implied the same
+     * @param position
+     *      The position of a free block
+     * @param size
+     *      The size of the free block
+     * @return The position of the buddy
+     */
+    public int getBuddyPos(int position, int size) {
+        // This is from OpenDSA 11.09
+        // Flip the k'th bit with bitwise XOR
+        return position ^ size;
+    }
+    
+    /**
+     * Return true if the blocks are buddies
+     * @param b1start
+     *      The starting position of b1
+     * @param b1size
+     *      The size of b1
+     * @param b2start
+     *      The starting position of b2
+     * @param b2size
+     *      The size of b2
+     * @return true if b1 and b2 are buddies
+     */
+    public boolean areBuddies(int b1start, int b1size, int b2start, int b2size) {
+        // This is from OpenDSA 11.09
+        return (b1start | b1size) == (b2start | b2size);
+    }
+    
+    /**
      * Print the free block list to output
      */
     public void print() {
@@ -242,4 +274,35 @@ public class MemoryManager {
         
     }
 
+    /**
+     * Resizes the memory pool
+     */
+    public void resize() {
+        // Double capacity
+        int new_capacity = capacity * 2;
+        
+        // Create new size array
+        byte[] new_memory = new byte[new_capacity];
+        
+        // Copy over old array
+        for (int i = 0; i < capacity; i++) {
+            new_memory[i] = memory[i];
+        }
+        
+        // Install new array and update stats vars
+        memory = new_memory;
+        freebytes += capacity;
+        // usedbytes unchanged
+        
+        // Update FBL
+        freeblocklist.add(new ArrayList<Integer>());
+        freeblocklist.get(N).add(capacity);
+        
+        // Install new capacity
+        capacity = new_capacity;
+        N += 1;
+        
+        // TODO: Potentially merge here??
+    }
+    
 }

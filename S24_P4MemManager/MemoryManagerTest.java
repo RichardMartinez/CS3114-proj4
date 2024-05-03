@@ -198,19 +198,142 @@ public class MemoryManagerTest extends TestCase {
         assertFuzzyEquals(actual, expected);
     }
     
+    /**
+     * Test inserting half the space
+     */
+    public void testHalfInsert() {
+        memory = new MemoryManager(128);
+        
+        byte[] space = new byte[64];
+        int size = 64;
+        
+        Handle handle;
+        handle = memory.insert(space, size);
+        assertEquals(handle.getAddress(), 0);
+        assertEquals(handle.getLength(), 64);
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        String actual = systemOut().getHistory();
+        
+        String expected = "Freeblock List:\n" +
+            "64: 64\n";
+        
+        assertFuzzyEquals(actual, expected);
+    }
     
-    // TODO: Split at position != 0
+    /**
+     * Test splitting all the way to 1 insert
+     */
+    public void testAllTheWayInsert() {
+        memory = new MemoryManager(128);
+        
+        byte[] space = new byte[1];
+        int size = 1;
+        
+        Handle handle;
+        handle = memory.insert(space, size);
+        assertEquals(handle.getAddress(), 0);
+        assertEquals(handle.getLength(), 1);
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        String actual = systemOut().getHistory();
+        
+        String expected = "Freeblock List:\n" +
+            "1: 1\n" +
+            "2: 2\n" +
+            "4: 4\n" +
+            "8: 8\n" +
+            "16: 16\n" +
+            "32: 32\n" +
+            "64: 64\n";
+        
+        assertFuzzyEquals(actual, expected);
+    }
+    
     /**
      * Test splitting at a non-zero position
      */
-//    public void testSplitAtPositionNonZero() {
+    public void testSplitAtPositionNonZero() {
+        memory = new MemoryManager(128);
+        
+        int size;
+        byte[] space;
+        Handle handle;
+        
+        // Allocate 64 bytes
+        // Should split once at position 0
+        size = 64;
+        space = new byte[size];
+        handle = memory.insert(space, size);
+        assertEquals(handle.getAddress(), 0);
+        assertEquals(handle.getLength(), 64);
+        
+        // Allocate 16 bytes
+        // Should split twice at position 64
+        size = 16;
+        space = new byte[size];
+        handle = memory.insert(space, size);
+        assertEquals(handle.getAddress(), 64);
+        assertEquals(handle.getLength(), 16);
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        String actual = systemOut().getHistory();
+        
+        String expected = "Freeblock List:\n" +
+            "16: 80\n" +
+            "32: 96\n";
+        
+        assertFuzzyEquals(actual, expected);
+    }
+    
+    /**
+     * Test the get buddy pos method
+     */
+    public void testGetBuddyPos() {
+        int position;
+        int size;
+        int buddyPos;
+        
+        position = 0;
+        size = 64;
+        buddyPos = memory.getBuddyPos(position, size);
+        assertEquals(buddyPos, 64);
+        assertTrue(memory.areBuddies(position, size, buddyPos, size));
+        
+        position = 64;
+        size = 64;
+        buddyPos = memory.getBuddyPos(position, size);
+        assertEquals(buddyPos, 0);
+        assertTrue(memory.areBuddies(position, size, buddyPos, size));
+        
+        // Situation for basic resize
+        position = 0;
+        size = 128;
+        buddyPos = memory.getBuddyPos(position, size);
+        assertEquals(buddyPos, 128);
+        assertTrue(memory.areBuddies(position, size, buddyPos, size));
+    }
+    
+    /**
+     * Test resizing an empty memory
+     */
+//    public void testBasicResize() {
 //        memory = new MemoryManager(128);
 //        
-//        // Allocate 64 bytes
-//        // Should split once at position 0
+//        System.out.println("BEFORE BASIC RESIZE");
+//        memory.print();
 //        
-//        // Allocate 16 bytes
-//        // Should split twice at position 64
+//        // Resize
+//        memory.resize();
+//        
+//        System.out.println("AFTER BASIC RESIZE");
+//        memory.print();
 //    }
     
     
