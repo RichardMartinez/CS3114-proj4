@@ -76,9 +76,8 @@ public class SemManagerTest extends TestCase {
         SemManager.main(args);
         String output = systemOut().getHistory();
         String referenceOutput = readFile("P1SimpSample_outputX.txt");
-        
-        // TODO: Uncomment this
-        // assertFuzzyEquals(referenceOutput, output);
+
+        assertFuzzyEquals(referenceOutput, output);
     }
 }
 
