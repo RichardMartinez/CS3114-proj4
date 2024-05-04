@@ -747,7 +747,118 @@ public class MemoryManagerTest extends TestCase {
         assertFalse(success);
     }
     
-    // TODO: Test can insert
+    /**
+     * Test the can insert method
+     */
+    public void testCanInsert() {
+        memory = new MemoryManager(32);
+        
+        assertEquals(memory.numFreeBytes(), 32);
+        
+        int size;
+        int blockN;
+        byte[] space;
+        Handle handle;
+        
+        // Empty Memory
+        size = 8;
+        blockN = memory.nextPow2(size);
+        assertTrue(memory.canInsert(blockN));
+        
+        size = 16;
+        blockN = memory.nextPow2(size);
+        assertTrue(memory.canInsert(blockN));
+        
+        size = 32;
+        blockN = memory.nextPow2(size);
+        assertTrue(memory.canInsert(blockN));
+        
+        size = 64;
+        blockN = memory.nextPow2(size);
+        assertFalse(memory.canInsert(blockN));
+        
+        // Half Memory
+        size = 16;
+        space = new byte[size];
+        handle = memory.insert(space, size);
+        assertEquals(handle.getAddress(), 0);
+        assertEquals(handle.getLength(), 16);
+        assertEquals(memory.numFreeBytes(), 16);
+        
+        size = 8;
+        blockN = memory.nextPow2(size);
+        assertTrue(memory.canInsert(blockN));
+        
+        size = 16;
+        blockN = memory.nextPow2(size);
+        assertTrue(memory.canInsert(blockN));
+        
+        size = 32;
+        blockN = memory.nextPow2(size);
+        assertFalse(memory.canInsert(blockN));
+        
+        size = 64;
+        blockN = memory.nextPow2(size);
+        assertFalse(memory.canInsert(blockN));
+        
+        memory.remove(handle);  // Clear memory
+        assertEquals(memory.numFreeBytes(), 32);
+        
+        // Split Memory
+        // Insert 3 8's, clear 2nd 8
+        size = 8;
+        space = new byte[size];
+        memory.insert(space, size);
+        handle = memory.insert(space, size);
+        memory.insert(space, size);
+        memory.remove(handle);
+        assertEquals(memory.numFreeBytes(), 16);
+        
+        size = 8;
+        blockN = memory.nextPow2(size);
+        assertTrue(memory.canInsert(blockN));
+        
+        size = 16;
+        blockN = memory.nextPow2(size);
+        assertFalse(memory.canInsert(blockN));
+        
+        size = 32;
+        blockN = memory.nextPow2(size);
+        assertFalse(memory.canInsert(blockN));
+        
+        size = 64;
+        blockN = memory.nextPow2(size);
+        assertFalse(memory.canInsert(blockN));
+        
+        // Clear memory
+        handle = new Handle(0, 8);
+        memory.remove(handle);
+        handle = new Handle(16, 8);
+        memory.remove(handle);
+        assertEquals(memory.numFreeBytes(), 32);
+        
+        // Full memory
+        size = 32;
+        space = new byte[size];
+        handle = memory.insert(space, size);
+        assertEquals(memory.numFreeBytes(), 0);
+        
+        size = 8;
+        blockN = memory.nextPow2(size);
+        assertFalse(memory.canInsert(blockN));
+        
+        size = 16;
+        blockN = memory.nextPow2(size);
+        assertFalse(memory.canInsert(blockN));
+        
+        size = 32;
+        blockN = memory.nextPow2(size);
+        assertFalse(memory.canInsert(blockN));
+        
+        size = 64;
+        blockN = memory.nextPow2(size);
+        assertFalse(memory.canInsert(blockN));
+    }
     
     // TODO: Test auto resize on insert too big (blockN > this.N)
     
