@@ -1085,9 +1085,286 @@ public class MemoryManagerTest extends TestCase {
         }
     }
     
-    
-    // TODO: Test capstone
-    
+    /**
+     * Capstone test for MemoryManager
+     */
+    public void testCapstone() {
+        memory = new MemoryManager(128);
+        
+        int size;
+        byte[] space;
+        
+        // Generate records
+        size = 7;
+        byte[] record7 = new byte[size];
+        for (int i = 0; i < size; i++) {
+            record7[i] = (byte)(i + 1);
+        }
+        Handle handle7;
+        
+        size = 20;
+        byte[] record20 = new byte[size];
+        for (int i = 0; i < size; i++) {
+            record20[i] = (byte)(i + 1);
+        }
+        Handle handle20;
+        
+        size = 15;
+        byte[] record15 = new byte[size];
+        for (int i = 0; i < size; i++) {
+            record15[i] = (byte)(i + 1);
+        }
+        Handle handle15;
+        
+        size = 23;
+        byte[] record23 = new byte[size];
+        for (int i = 0; i < size; i++) {
+            record23[i] = (byte)(i + 1);
+        }
+        Handle handle23;
+        
+        size = 40;
+        byte[] record40 = new byte[size];
+        for (int i = 0; i < size; i++) {
+            record40[i] = (byte)(i + 1);
+        }
+        Handle handle40;
+        
+        size = 30;
+        byte[] record30 = new byte[size];
+        for (int i = 0; i < size; i++) {
+            record30[i] = (byte)(i + 1);
+        }
+        Handle handle30;
+        
+        size = 29;
+        byte[] record29 = new byte[size];
+        for (int i = 0; i < size; i++) {
+            record29[i] = (byte)(i + 1);
+        }
+        Handle handle29;
+        
+        size = 100;
+        byte[] record100 = new byte[size];
+        for (int i = 0; i < size; i++) {
+            record100[i] = (byte)(i + 1);
+        }
+        Handle handle100;
+        
+        size = 8;
+        byte[] record8 = new byte[size];
+        for (int i = 0; i < size; i++) {
+            record8[i] = (byte)(i + 1);
+        }
+        Handle handle8;
+        
+        // Insert 4 Records
+        // Sizes: 7, 20, 15, 23
+        handle7 = memory.insert(record7, 7);
+        assertEquals(handle7.getAddress(), 0);
+        assertEquals(handle7.getLength(), 7);
+        
+        handle20 = memory.insert(record20, 20);
+        assertEquals(handle20.getAddress(), 32);
+        assertEquals(handle20.getLength(), 20);
+        
+        handle15 = memory.insert(record15, 15);
+        assertEquals(handle15.getAddress(), 16);
+        assertEquals(handle15.getLength(), 15);
+        
+        handle23 = memory.insert(record23, 23);
+        assertEquals(handle23.getAddress(), 64);
+        assertEquals(handle23.getLength(), 23);
+        
+        // Verify structure, capacity, freebytes
+        assertEquals(memory.getCapacity(), 128);
+        assertEquals(memory.numFreeBytes(), 40);
+        
+        // Verify Structure
+        String actual;
+        String expected;
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        expected = "Freeblock List:\n" +
+            "8: 8\n" +
+            "32: 96\n";
+        assertFuzzyEquals(actual, expected);
+        
+        // Insert to force resize (40 -> 64)
+        handle40 = memory.insert(record40, 40);
+        assertEquals(handle40.getAddress(), 128);
+        assertEquals(handle40.getLength(), 40);
+        
+        // Verify structure, capacity, freebytes
+        assertEquals(memory.getCapacity(), 256);
+        assertEquals(memory.numFreeBytes(), 104);
+        
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        expected = "Freeblock List:\n" +
+            "8: 8\n" +
+            "32: 96\n" +
+            "64: 192\n";
+        assertFuzzyEquals(actual, expected);
+        
+        // Get all those records back
+        size = 7;
+        space = new byte[size];
+        memory.get(space, handle7, size);
+        for (int i = 0; i < size; i++) {
+            assertEquals(space[i], (byte)(i + 1));
+        }
+        
+        size = 15;
+        space = new byte[size];
+        memory.get(space, handle15, size);
+        for (int i = 0; i < size; i++) {
+            assertEquals(space[i], (byte)(i + 1));
+        }
+
+        size = 20;
+        space = new byte[size];
+        memory.get(space, handle20, size);
+        for (int i = 0; i < size; i++) {
+            assertEquals(space[i], (byte)(i + 1));
+        }
+        
+        size = 23;
+        space = new byte[size];
+        memory.get(space, handle23, size);
+        for (int i = 0; i < size; i++) {
+            assertEquals(space[i], (byte)(i + 1));
+        }
+        
+        size = 40;
+        space = new byte[size];
+        memory.get(space, handle40, size);
+        for (int i = 0; i < size; i++) {
+            assertEquals(space[i], (byte)(i + 1));
+        }
+        
+        // Remove 23 and 40
+        memory.remove(handle23);
+        memory.remove(handle40);
+        
+        // Verify structure, capacity, freebytes
+        assertEquals(memory.getCapacity(), 256);
+        assertEquals(memory.numFreeBytes(), 200);
+        
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        expected = "Freeblock List:\n" +
+            "8: 8\n" +
+            "64: 64\n" +
+            "128: 128\n";
+        assertFuzzyEquals(actual, expected);
+        
+        // Insert 30, 29, 100
+        handle30 = memory.insert(record30, 30);
+        assertEquals(handle30.getAddress(), 64);
+        assertEquals(handle30.getLength(), 30);
+        
+        handle29 = memory.insert(record29, 29);
+        assertEquals(handle29.getAddress(), 96);
+        assertEquals(handle29.getLength(), 29);
+        
+        handle100 = memory.insert(record100, 100);
+        assertEquals(handle100.getAddress(), 128);
+        assertEquals(handle100.getLength(), 100);
+        
+        // Verify structure, capacity, freebytes
+        assertEquals(memory.getCapacity(), 256);
+        assertEquals(memory.numFreeBytes(), 8);
+        
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        expected = "Freeblock List:\n" +
+            "8: 8\n";
+        assertFuzzyEquals(actual, expected);
+        
+        // Get all records still in memory
+        size = 7;
+        space = new byte[size];
+        memory.get(space, handle7, size);
+        for (int i = 0; i < size; i++) {
+            assertEquals(space[i], (byte)(i + 1));
+        }
+        
+        size = 15;
+        space = new byte[size];
+        memory.get(space, handle15, size);
+        for (int i = 0; i < size; i++) {
+            assertEquals(space[i], (byte)(i + 1));
+        }
+
+        size = 20;
+        space = new byte[size];
+        memory.get(space, handle20, size);
+        for (int i = 0; i < size; i++) {
+            assertEquals(space[i], (byte)(i + 1));
+        }
+        
+        size = 30;
+        space = new byte[size];
+        memory.get(space, handle30, size);
+        for (int i = 0; i < size; i++) {
+            assertEquals(space[i], (byte)(i + 1));
+        }
+        
+        size = 29;
+        space = new byte[size];
+        memory.get(space, handle29, size);
+        for (int i = 0; i < size; i++) {
+            assertEquals(space[i], (byte)(i + 1));
+        }
+        
+        size = 100;
+        space = new byte[size];
+        memory.get(space, handle100, size);
+        for (int i = 0; i < size; i++) {
+            assertEquals(space[i], (byte)(i + 1));
+        }
+        
+        // Insert 8 to make it full
+        handle8 = memory.insert(record8, 8);
+        assertEquals(handle8.getAddress(), 8);
+        assertEquals(handle8.getLength(), 8);
+        
+        // Verify final structure, capacity, freebytes
+        assertEquals(memory.getCapacity(), 256);
+        assertEquals(memory.numFreeBytes(), 0);
+        
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        expected = "Freeblock List:\n" +
+            "There are no freeblocks in the memory pool\n";
+        assertFuzzyEquals(actual, expected);
+
+        // Remove all
+        memory.remove(handle7);
+        memory.remove(handle8);
+        memory.remove(handle15);
+        memory.remove(handle20);
+        memory.remove(handle30);
+        memory.remove(handle29);
+        memory.remove(handle100);
+        
+        // Verify empty
+        assertEquals(memory.getCapacity(), 256);
+        assertEquals(memory.numFreeBytes(), 256);
+        
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        expected = "Freeblock List:\n" +
+            "256: 0\n";
+        assertFuzzyEquals(actual, expected);
+    }
     
     
 }

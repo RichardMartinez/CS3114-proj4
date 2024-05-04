@@ -150,8 +150,6 @@ public class MemoryManager {
         int position = handle.getAddress();
         int length = handle.getLength();
         
-        // TODO: Verify block is not in FBL?
-        
         if (length != size) {
             // Space array and length of record do not line up
             return false;
@@ -410,9 +408,10 @@ public class MemoryManager {
         // False if not -> Resize before anything else
 
         // Can't insert if requested blockN > this.N
-        if (blockN > this.N) {
-            return false;
-        }
+        // This is covered in for loop
+//        if (blockN > this.N) {
+//            return false;
+//        }
         
         // Can insert if any sublist blockN -> this.N
         // has length > 0
