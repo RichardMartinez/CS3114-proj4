@@ -71,7 +71,12 @@ public class MemoryManager {
         int blockN = nextPow2(size);
         int blocksize = raiseToPow2(blockN);
 
-        // TODO: Check size and resize
+        // Check size and resize
+        // If can't insert -> resize
+        // Keep resizing until done
+        while (!canInsert(blockN)) {
+            resize();
+        }
         
         // Here, we are guaranteed enough space
         
@@ -452,6 +457,14 @@ public class MemoryManager {
         
         // Merge here
         merge();
+    }
+    
+    /**
+     * Return the capacity
+     * @return capacity
+     */
+    public int getCapacity() {
+        return capacity;
     }
     
 }

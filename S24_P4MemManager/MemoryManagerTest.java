@@ -860,9 +860,231 @@ public class MemoryManagerTest extends TestCase {
         assertFalse(memory.canInsert(blockN));
     }
     
-    // TODO: Test auto resize on insert too big (blockN > this.N)
+    /**
+     * Test auto resize when inserting blockN > this.N
+     */
+    public void testAutoResize1() {
+        memory = new MemoryManager(32);
+        
+        int size;
+        byte[] space;
+        Handle handle;
+        
+        assertEquals(memory.getCapacity(), 32);
+        
+        // Try to insert 64
+        size = 64;
+        space = new byte[size];
+        handle = memory.insert(space, size); // Should resize
+        assertEquals(handle.getAddress(), 0);
+        assertEquals(handle.getLength(), 64);
+        
+        assertEquals(memory.getCapacity(), 64);
+        assertEquals(memory.numFreeBytes(), 0);
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        String actual = systemOut().getHistory();
+        
+        String expected = "Freeblock List:\n" +
+            "There are no freeblocks in the memory pool\n";
+        
+        assertFuzzyEquals(actual, expected);
+    }
     
-    // TODO: Test auto resize on insert no valid free block (internal frag.)
+    /**
+     * Test auto resize when inserting blockN > this.N by 2
+     */
+    public void testAutoResize2() {
+        memory = new MemoryManager(32);
+        
+        int size;
+        byte[] space;
+        Handle handle;
+        
+        assertEquals(memory.getCapacity(), 32);
+        
+        // Try to insert 128
+        size = 128;
+        space = new byte[size];
+        handle = memory.insert(space, size); // Should resize
+        assertEquals(handle.getAddress(), 0);
+        assertEquals(handle.getLength(), 128);
+        
+        assertEquals(memory.getCapacity(), 128);
+        assertEquals(memory.numFreeBytes(), 0);
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        String actual = systemOut().getHistory();
+        
+        String expected = "Freeblock List:\n" +
+            "There are no freeblocks in the memory pool\n";
+        
+        assertFuzzyEquals(actual, expected);
+    }
+    
+    /**
+     * Test auto resize when inserting blockN as a non power of 2
+     */
+    public void testAutoResizeNonPow2() {
+        memory = new MemoryManager(32);
+        
+        int size;
+        byte[] space;
+        Handle handle;
+        
+        assertEquals(memory.getCapacity(), 32);
+        
+        // Try to insert 60 -> 64
+        size = 60;
+        space = new byte[size];
+        handle = memory.insert(space, size); // Should resize
+        assertEquals(handle.getAddress(), 0);
+        assertEquals(handle.getLength(), 60);
+        
+        assertEquals(memory.getCapacity(), 64);
+        assertEquals(memory.numFreeBytes(), 0);
+        
+        // Verify the structure
+        systemOut().clearHistory();
+        memory.print();
+        String actual = systemOut().getHistory();
+        
+        String expected = "Freeblock List:\n" +
+            "There are no freeblocks in the memory pool\n";
+        
+        assertFuzzyEquals(actual, expected);
+    }
+    
+    /**
+     * Test resize when we have enough bytes, but no space
+     */
+    public void testAutoResizeFrag() {
+        memory = new MemoryManager(32);
+        
+        int size;
+        byte[] space;
+        Handle handle;
+        
+        // Insert 3 8's, remove 2nd 8
+        size = 8;
+        space = new byte[size];
+        memory.insert(space, size);
+        handle = memory.insert(space, size);
+        memory.insert(space, size);
+        memory.remove(handle);
+        
+        // We have enough bytes
+        // Try to insert 16
+        // But no space, must resize
+        assertEquals(memory.numFreeBytes(), 16);
+        assertEquals(memory.getCapacity(), 32);
+        
+        size = 16;
+        space = new byte[size];
+        handle = memory.insert(space, size);
+        assertEquals(handle.getAddress(), 32);
+        assertEquals(handle.getLength(), 16);
+        assertEquals(memory.numFreeBytes(), 32);
+        assertEquals(memory.getCapacity(), 64);
+        
+        // Verify Structure
+        String actual;
+        String expected;
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        expected = "Freeblock List:\n" +
+            "8: 8 24\n" +
+            "16: 48\n";
+        assertFuzzyEquals(actual, expected);
+    }
+    
+    /**
+     * Test resizing on full mem
+     */
+    public void testAutoResizeFullMem() {
+        memory = new MemoryManager(32);
+        
+        int size;
+        byte[] space;
+        Handle handle;
+        
+        // Fill memory
+        size = 32;
+        space = new byte[size];
+        handle = memory.insert(space, size);
+        assertEquals(handle.getAddress(), 0);
+        assertEquals(handle.getLength(), 32);
+        
+        assertEquals(memory.numFreeBytes(), 0);
+        assertEquals(memory.getCapacity(), 32);
+        
+        // Insert 16
+        size = 16;
+        space = new byte[size];
+        handle = memory.insert(space, size);
+        assertEquals(handle.getAddress(), 32);
+        assertEquals(handle.getLength(), 16);
+        
+        assertEquals(memory.numFreeBytes(), 16);
+        assertEquals(memory.getCapacity(), 64);
+        
+        // Verify Structure
+        String actual;
+        String expected;
+        systemOut().clearHistory();
+        memory.print();
+        actual = systemOut().getHistory();
+        expected = "Freeblock List:\n" +
+            "16: 48\n";
+        assertFuzzyEquals(actual, expected);
+    }
+    
+    /**
+     * Make sure resizes keeps old memory
+     */
+    public void testResizeKeepMemContents() {
+        memory = new MemoryManager(32);
+        
+        int size = 8;
+        byte[] space = new byte[size];
+        Handle handle1;
+        Handle handle2;
+        
+        // Build record arrays
+        byte[] record1 = new byte[size];
+        byte[] record2 = new byte[size];
+        for (int i = 0; i < size; i++) {
+            record1[i] = (byte)(i + 1);
+            record2[i] = (byte)(8 - i);
+        }
+        
+        // Insert 8 array into Handle(8, 8)
+        size = 8;
+        memory.insert(space, size);
+        handle1 = memory.insert(record1, size);
+        memory.insert(space, size);
+        memory.insert(space, size);
+        
+        // Insert to cause resize
+        handle2 = memory.insert(record2, size);
+        
+        // Make sure you can get both records back
+        memory.get(space, handle1, size);
+        for (int i = 0; i < size; i++) {
+            assertEquals(space[i], (byte)(i + 1));
+        }
+        
+        memory.get(space, handle2, size);
+        for (int i = 0; i < size; i++) {
+            assertEquals(space[i], (byte)(8 - i));
+        }
+    }
+    
     
     // TODO: Test capstone
     
