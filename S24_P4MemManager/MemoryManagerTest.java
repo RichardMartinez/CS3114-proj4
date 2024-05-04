@@ -684,13 +684,74 @@ public class MemoryManagerTest extends TestCase {
         assertFuzzyEquals(actual, expected);
     }
     
+    /**
+     * Place a 10 byte array into memory
+     * Then get it back
+     */
+    public void testBasicGet() {
+        memory = new MemoryManager(32);
+        
+        int size;
+        byte[] space;
+        Handle handle;
+        boolean success;
+        
+        size = 10;
+        space = new byte[size];
+        for (int i = 0; i < size; i++) {
+            space[i] = (byte)i;
+        }
+        
+        handle = memory.insert(space, size);
+        assertEquals(handle.getAddress(), 0);
+        assertEquals(handle.getLength(), 10);
+        assertEquals(memory.numFreeBytes(), 16);
+        
+        // Try getting it back
+        byte[] space2 = new byte[10];
+        success = memory.get(space2, handle, size);
+        assertTrue(success);
+        
+        // Verify the arrays are the same
+        for (int i = 0; i < size; i++) {
+            assertEquals(space[i], space2[i]);
+        }
+    }
+    
+    /**
+     * Test failed get
+     */
+    public void testFailedGet() {
+        memory = new MemoryManager(32);
+        
+        int size;
+        byte[] space;
+        Handle handle;
+        boolean success;
+        
+        size = 10;
+        space = new byte[size];
+        for (int i = 0; i < size; i++) {
+            space[i] = (byte)i;
+        }
+        
+        handle = memory.insert(space, size);
+        assertEquals(handle.getAddress(), 0);
+        assertEquals(handle.getLength(), 10);
+        assertEquals(memory.numFreeBytes(), 16);
+        
+        // Try getting it back
+        size = 15;
+        byte[] space2 = new byte[size];
+        success = memory.get(space2, handle, size);
+        assertFalse(success);
+    }
+    
+    // TODO: Test can insert
+    
     // TODO: Test auto resize on insert too big (blockN > this.N)
     
     // TODO: Test auto resize on insert no valid free block (internal frag.)
-    
-    // TODO: Test adding non power of two sizes
-    
-    // TODO: Test get
     
     // TODO: Test capstone
     

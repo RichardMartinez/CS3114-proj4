@@ -126,6 +126,37 @@ public class MemoryManager {
     }
     
     // TODO: Implement get here
+    
+    /**
+     * Get a record from memory and put it into space
+     * @param space
+     *      The array to place record into
+     * @param handle
+     *      The handle pointing to the record in memory
+     * @param size
+     *      The size of the space array
+     * @return true if successful
+     */
+    public boolean get(byte[] space, Handle handle, int size) {
+        // Copy "size" bytes into "space" from position specified
+        // by "handle"
+        
+        // Assume error checking, just do the get
+        int position = handle.getAddress();
+        int length = handle.getLength();
+        
+        // TODO: Verify block is not in FBL?
+        
+        if (length != size) {
+            // Space array and length of record do not line up
+            return false;
+        }
+        
+        for (int i = 0; i < size; i++) {
+            space[i] = memory[position + i];
+        }
+        return true;
+    }
         
     /**
      * Splits the free block list until a blockN is available
@@ -361,6 +392,35 @@ public class MemoryManager {
             System.out.println();
         }
         
+    }
+    
+    /**
+     * Return true if can insert a blockN
+     * @param blockN
+     *      The blockN to check
+     * @return true if can insert
+     */
+    public boolean canInsert(int blockN) {
+        // True if current memory can insert a blockN
+        // False if not -> Resize before anything else
+
+        // Can't insert if requested blockN > this.N
+        if (blockN > this.N) {
+            return false;
+        }
+        
+        // Can insert if any sublist blockN -> this.N
+        // has length > 0
+        // See if any sublist has space
+        for (int i = blockN; i <= this.N; i++) {
+            ArrayList<Integer> sublist = freeblocklist.get(i);
+            if (sublist.size() > 0) {
+                return true;
+            }
+        }
+        
+        // No sublist found
+        return false;
     }
 
     /**
