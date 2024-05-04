@@ -130,8 +130,6 @@ public class MemoryManager {
         merge();
     }
     
-    // TODO: Implement get here
-    
     /**
      * Get a record from memory and put it into space
      * @param space
@@ -407,12 +405,6 @@ public class MemoryManager {
         // True if current memory can insert a blockN
         // False if not -> Resize before anything else
 
-        // Can't insert if requested blockN > this.N
-        // This is covered in for loop
-//        if (blockN > this.N) {
-//            return false;
-//        }
-        
         // Can insert if any sublist blockN -> this.N
         // has length > 0
         // See if any sublist has space
