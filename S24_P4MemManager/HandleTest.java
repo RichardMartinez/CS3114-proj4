@@ -10,14 +10,15 @@ import student.TestCase;
 public class HandleTest extends TestCase {
 
     private Handle handle;
-    
+
     /**
      * Initialize the test object
      */
     public void setUp() {
         handle = new Handle(10, 20);
     }
-    
+
+
     /**
      * Test the methods of Handle
      */
@@ -25,16 +26,16 @@ public class HandleTest extends TestCase {
         assertEquals(handle.getAddress(), 10);
         assertEquals(handle.getLength(), 20);
     }
-    
+
+
     /**
      * Test the default constructor for Handle
      */
     public void testDefaultHandle() {
         handle = new Handle();
-        
+
         assertEquals(handle.getAddress(), -1);
         assertEquals(handle.getLength(), -1);
     }
-    
-    // TODO: Test equals(Handle) method??
+
 }

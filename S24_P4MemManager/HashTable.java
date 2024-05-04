@@ -26,7 +26,6 @@ public class HashTable {
      *            The initial capacity must be power of two
      */
     public HashTable(int capacity) {
-        // TODO: Check that capacity is power of two
         this.capacity = capacity;
 
         // Init array
@@ -40,30 +39,30 @@ public class HashTable {
 
 
     /**
-     * First hash function h1(k, M)
+     * First hash function h1(k, m)
      * 
      * @param k
      *            The integer to hash
-     * @param M
+     * @param m
      *            The size of the hash table
      * @return the hashed integer
      */
-    public int h1(int k, int M) {
-        return k % M;
+    public int h1(int k, int m) {
+        return k % m;
     }
 
 
     /**
-     * Second hash function h2(k, M)
+     * Second hash function h2(k, m)
      * 
      * @param k
      *            The integer to hash
-     * @param M
+     * @param m
      *            The size of the hash table
      * @return the hashed integer
      */
-    public int h2(int k, int M) {
-        return (((k / M) % (M / 2)) * 2) + 1;
+    public int h2(int k, int m) {
+        return (((k / m) % (m / 2)) * 2) + 1;
     }
 
 
@@ -333,17 +332,17 @@ public class HashTable {
      */
     public void resize() {
         // Double capacity
-        int new_capacity = capacity * 2;
-        
+        int newCapacity = capacity * 2;
+
         // Announce to console out
         String out;
-        out = String.format("Hash Table expanded to %d records", new_capacity);
+        out = String.format("Hash Table expanded to %d records", newCapacity);
         System.out.println(out);
 
         // Create new size table
-        HashEntry[] new_table = new HashEntry[new_capacity];
-        for (int i = 0; i < new_capacity; i++) {
-            new_table[i] = new HashEntry();
+        HashEntry[] newTable = new HashEntry[newCapacity];
+        for (int i = 0; i < newCapacity; i++) {
+            newTable[i] = new HashEntry();
         }
 
         // Go through old table
@@ -356,27 +355,27 @@ public class HashTable {
 
             if (state == HashEntryState.FULL) {
                 // Insert into new table
-                int index = h1(key, new_capacity);
-                int step = h2(key, new_capacity);
-                HashEntryState state2 = new_table[index].getState();
+                int index = h1(key, newCapacity);
+                int step = h2(key, newCapacity);
+                HashEntryState state2 = newTable[index].getState();
 
                 while (state2 != HashEntryState.EMPTY) {
                     // Never tombstones here, only fulls
                     // Never duplicates here
-                    index = (index + step) % new_capacity;
-                    state2 = new_table[index].getState();
+                    index = (index + step) % newCapacity;
+                    state2 = newTable[index].getState();
                 }
 
                 // Found a valid spot here
-                new_table[index] = entry;
+                newTable[index] = entry;
             }
             // Ignore tombs and empty
         }
 
         // Install changes
         // Size doesn't change
-        table = new_table;
-        capacity = new_capacity;
+        table = newTable;
+        capacity = newCapacity;
     }
 
 }

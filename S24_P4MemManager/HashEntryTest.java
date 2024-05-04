@@ -10,9 +10,9 @@ import student.TestCase;
 public class HashEntryTest extends TestCase {
 
     private HashEntry entry;
-    
+
     private Handle handle;
-    
+
     /**
      * Initialize the test object
      */
@@ -20,7 +20,8 @@ public class HashEntryTest extends TestCase {
         handle = new Handle(15, 25);
         entry = new HashEntry(5, handle);
     }
-    
+
+
     /**
      * Test the methods of HashEntry
      */
@@ -29,11 +30,12 @@ public class HashEntryTest extends TestCase {
         assertEquals(entry.getValue().getAddress(), 15);
         assertEquals(entry.getValue().getLength(), 25);
         assertEquals(entry.getState(), HashEntryState.EMPTY);
-        
+
         entry.setState(HashEntryState.FULL);
         assertEquals(entry.getState(), HashEntryState.FULL);
     }
-    
+
+
     /**
      * Test the default HashEntry
      */

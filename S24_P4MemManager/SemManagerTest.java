@@ -16,15 +16,16 @@ public class SemManagerTest extends TestCase {
         // Nothing here
     }
 
+
     /**
      * Read contents of a file into a string
-     * @param path File name
+     * 
+     * @param path
+     *            File name
      * @return the string
      * @throws IOException
      */
-    static String readFile(String path)
-        throws IOException
-    {
+    static String readFile(String path) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded);
     }
@@ -32,22 +33,22 @@ public class SemManagerTest extends TestCase {
 
     /**
      * This method is simply to get coverage of the class declaration.
-     * @throws IOException 
+     * 
+     * @throws IOException
      */
-    public void testMInitx() throws IOException
-    {
+    public void testMInitx() throws IOException {
         SemManager sem = new SemManager();
         assertNotNull(sem);
-//        SemManager.main(null);
+// SemManager.main(null);
     }
+
 
     /**
      * Full parser test
+     * 
      * @throws IOException
      */
-    public void testparserfull()
-        throws IOException
-    {
+    public void testparserfull() throws IOException {
         String[] args = new String[3];
         args[0] = "512";
         args[1] = "4";
@@ -56,17 +57,17 @@ public class SemManagerTest extends TestCase {
         SemManager.main(args);
         String output = systemOut().getHistory();
         String referenceOutput = readFile("P1Sample_outputX.txt");
-        
+
         assertFuzzyEquals(referenceOutput, output);
     }
-    
+
+
     /**
      * Simple parser test (input only)
+     * 
      * @throws IOException
      */
-    public void testparserinput()
-        throws IOException
-    {
+    public void testparserinput() throws IOException {
         String[] args = new String[3];
         args[0] = "2048";
         args[1] = "16";
@@ -78,10 +79,12 @@ public class SemManagerTest extends TestCase {
 
         assertFuzzyEquals(referenceOutput, output);
     }
-    
+
+
     /**
      * Test simple extension files
-     * @throws IOException 
+     * 
+     * @throws IOException
      */
     public void testSimpExtension() throws IOException {
         String[] args = new String[3];
@@ -95,10 +98,12 @@ public class SemManagerTest extends TestCase {
 
         assertFuzzyEquals(referenceOutput, output);
     }
-    
+
+
     /**
      * Test P4 sample files
-     * @throws IOException 
+     * 
+     * @throws IOException
      */
     public void testP4Sample() throws IOException {
         String[] args = new String[3];
@@ -112,10 +117,12 @@ public class SemManagerTest extends TestCase {
 
         assertFuzzyEquals(referenceOutput, output);
     }
-    
+
+
     /**
      * Test the capstone files
-     * @throws IOException 
+     * 
+     * @throws IOException
      */
     public void testCapstone() throws IOException {
         String[] args = new String[3];
@@ -131,4 +138,3 @@ public class SemManagerTest extends TestCase {
     }
 
 }
-

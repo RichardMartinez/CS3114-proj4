@@ -11,8 +11,7 @@ import java.util.List;
  * @author Richard Martinez
  * @version 2024-04-20
  */
-public class CommandProcessor
-{
+public class CommandProcessor {
     private SeminarDB myWorld;
 
     /**
@@ -22,12 +21,9 @@ public class CommandProcessor
      *            The world database we are processing commands for
      * @throws IOException
      */
-    public CommandProcessor(SeminarDB inWorld)
-        throws IOException
-    {
+    public CommandProcessor(SeminarDB inWorld) throws IOException {
         myWorld = inWorld;
     }
-
 
 
     /**
@@ -39,9 +35,7 @@ public class CommandProcessor
      * @throws IOException
      * @return Always true
      */
-    public boolean readCmdFile(File theFile)
-        throws IOException
-    {
+    public boolean readCmdFile(File theFile) throws IOException {
         int sID;
         String stitle;
         String sdate;
@@ -54,13 +48,10 @@ public class CommandProcessor
         String sdescription;
         String ptype;
         int cnt;
-        try (Scanner sc = new Scanner(theFile))
-        { // Create our new scanner
-            while (sc.hasNext())
-            { // While the scanner has information to read
+        try (Scanner sc = new Scanner(theFile)) { // Create our new scanner
+            while (sc.hasNext()) { // While the scanner has information to read
                 String cmd = sc.next(); // Read the next term
-                switch (cmd)
-                {
+                switch (cmd) {
                     case "insert":
                         sID = sc.nextInt();
                         sc.nextLine(); // Flush the end-of-line
@@ -73,10 +64,9 @@ public class CommandProcessor
                         sc.nextLine(); // Flush the end-of-line
                         skeystring = sc.nextLine().trim();
                         List<String> temp = new ArrayList<String>();
-                        try (Scanner keysc = new Scanner(skeystring))
-                        { // Create our new scanner
-                            while (keysc.hasNext())
-                            {
+                        // Create our new scanner
+                        try (Scanner keysc = new Scanner(skeystring)) {
+                            while (keysc.hasNext()) {
                                 String dum = keysc.next().trim();
                                 temp.add(dum);
                             }
@@ -96,22 +86,20 @@ public class CommandProcessor
                         break;
                     case "print": // Found an intersections command
                         ptype = sc.next();
-                        if (ptype.equals("hashtable"))
-                        {
+                        if (ptype.equals("hashtable")) {
                             cnt = myWorld.hashprint();
                             // System.out.println("total records: " + cnt);
                         }
-                        else   
-                        {
+                        else {
                             // Do this for mutation testing
                             // if (ptype.equals("blocks"))
                             myWorld.memmanprint();
                         }
-//                        else
-//                        {
-//                            System.out.println(
-//                                "Print command has bad parameter");
-//                        }
+// else
+// {
+// System.out.println(
+// "Print command has bad parameter");
+// }
                         break;
                     default:// Found an unrecognized command
                         System.out.println("Unrecognized input: |" + cmd + "|");
@@ -119,8 +107,7 @@ public class CommandProcessor
                 }
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
         }
         return true;
