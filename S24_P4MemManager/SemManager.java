@@ -16,6 +16,8 @@
  * hashing technique which minimizes clustering. Both data
  * structure automatically resize when necessary to meet project
  * requirements.
+ * 
+ * This is the final project for CS 3114.
  */
 
 import java.io.File;
