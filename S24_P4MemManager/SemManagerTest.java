@@ -79,5 +79,22 @@ public class SemManagerTest extends TestCase {
 
         assertFuzzyEquals(referenceOutput, output);
     }
+    
+    /**
+     * Test simple extension files
+     * @throws IOException 
+     */
+    public void testSimpExtension() throws IOException {
+        String[] args = new String[3];
+        args[0] = "1024";
+        args[1] = "16";
+        args[2] = "P1SimpSampleExtension.txt";
+
+        SemManager.main(args);
+        String output = systemOut().getHistory();
+        String referenceOutput = readFile("P1SimpSampleExtension_out.txt");
+
+        assertFuzzyEquals(referenceOutput, output);
+    }
 }
 

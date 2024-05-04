@@ -114,6 +114,29 @@ public class SeminarDB
         
         /////
         
+        String out;
+        
+        // If ID does not exist, FAIL
+        if (!table.contains(sID)) {
+            // FAIL
+            out = String.format("Delete FAILED -- There is no record with ID %d", sID);
+            System.out.println(out);
+            return;
+        }
+        
+        // Get handle from table
+        Handle handle = table.get(sID);
+        
+        // Remove from memory
+        memory.remove(handle);
+        
+        // Remove from table
+        table.remove(sID);
+        
+        // SUCCESS
+        out = String.format("Record with ID %d successfully deleted from the database", sID);
+        System.out.println(out);
+        
         
         //TODO: Implement this method
         
