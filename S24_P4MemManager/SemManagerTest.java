@@ -57,8 +57,7 @@ public class SemManagerTest extends TestCase {
         String output = systemOut().getHistory();
         String referenceOutput = readFile("P1Sample_outputX.txt");
         
-        // TODO: Uncomment this
-        // assertFuzzyEquals(referenceOutput, output);
+        assertFuzzyEquals(referenceOutput, output);
     }
     
     /**
@@ -96,5 +95,24 @@ public class SemManagerTest extends TestCase {
 
         assertFuzzyEquals(referenceOutput, output);
     }
+    
+    /**
+     * Test P4 sample files
+     * @throws IOException 
+     */
+    public void testP4Sample() throws IOException {
+        String[] args = new String[3];
+        args[0] = "512";
+        args[1] = "4";
+        args[2] = "P4Sample_input.txt";
+
+        SemManager.main(args);
+        String output = systemOut().getHistory();
+        String referenceOutput = readFile("P4Sample_output.txt");
+
+        assertFuzzyEquals(referenceOutput, output);
+    }
+    
+    // TODO: Test capstone
 }
 

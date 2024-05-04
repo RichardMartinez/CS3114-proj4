@@ -89,31 +89,6 @@ public class SeminarDB
     public void delete(int sID)
         throws IOException
     {
-        ///// TEMP
-        
-//        Handle handle;
-//        handle = table.get(sID);
-//        
-//        boolean success;
-//        success = table.remove(sID);
-//        
-//        String out;
-//        
-//        if (!success) {
-//            // Delete FAILED -- There is no record with ID 6
-//            out = String.format("Delete FAILED -- There is no record with ID %d", sID);
-//            System.out.println(out);
-//            return;
-//        }
-//        
-//        // Here we know handle is valid
-//        
-//        out = String.format("Record with ID %d successfully deleted from the database", sID);
-//        System.out.println(out);
-        
-        
-        /////
-        
         String out;
         
         // If ID does not exist, FAIL
@@ -136,16 +111,6 @@ public class SeminarDB
         // SUCCESS
         out = String.format("Record with ID %d successfully deleted from the database", sID);
         System.out.println(out);
-        
-        
-        //TODO: Implement this method
-        
-        // Check hash table -> Handle
-        // If ID does not exist, FAIL
-        
-        // Remove from memory manager if exists
-        
-        // Remove from hash table
     }
 
     // ----------------------------------------------------------
@@ -158,16 +123,33 @@ public class SeminarDB
     public void search(int sID)
         throws IOException, Exception
     {
-        //TODO: Implement this method
+        String out;
         
-        // Check hash table -> Handle
-        // If ID does not exist, FAIL
+        // If ID does not exist -> FAIL
+        if (!table.contains(sID)) {
+            // FAIL
+            out = String.format("Search FAILED -- There is no record with ID %d", sID);
+            System.out.println(out);
+            return;
+        }
+        
+        // Get from table -> Handle
+        Handle handle = table.get(sID);
+        int size = handle.getLength();
         
         // Get from memory manager -> byte array
+        byte[] record = new byte[size];
+        memory.get(record, handle, size);
         
-        // De-serialize to Seminar object
+        // Record now contains byte array
+        // De-serialize to seminar object
+        Seminar sem = Seminar.deserialize(record);
         
+        // SUCCESS
         // Print all the stuff
+        out = String.format("Found record with ID %d:", sID);
+        System.out.println(out);
+        System.out.println(sem.toString());
     }
 
     // ----------------------------------------------------------

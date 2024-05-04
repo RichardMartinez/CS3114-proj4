@@ -101,15 +101,17 @@ public class CommandProcessor
                             cnt = myWorld.hashprint();
                             // System.out.println("total records: " + cnt);
                         }
-                        else if (ptype.equals("blocks"))
+                        else   
                         {
+                            // Do this for mutation testing
+                            // if (ptype.equals("blocks"))
                             myWorld.memmanprint();
                         }
-                        else
-                        {
-                            System.out.println(
-                                "Print command has bad parameter");
-                        }
+//                        else
+//                        {
+//                            System.out.println(
+//                                "Print command has bad parameter");
+//                        }
                         break;
                     default:// Found an unrecognized command
                         System.out.println("Unrecognized input: |" + cmd + "|");

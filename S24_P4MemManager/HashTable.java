@@ -334,6 +334,11 @@ public class HashTable {
     public void resize() {
         // Double capacity
         int new_capacity = capacity * 2;
+        
+        // Announce to console out
+        String out;
+        out = String.format("Hash Table expanded to %d records", new_capacity);
+        System.out.println(out);
 
         // Create new size table
         HashEntry[] new_table = new HashEntry[new_capacity];

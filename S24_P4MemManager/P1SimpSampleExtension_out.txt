@@ -30,8 +30,16 @@ Hashtable:
 total records: 4
 Freeblock List:
 There are no freeblocks in the memory pool
+Search FAILED -- There is no record with ID 6
+Found record with ID 3:
+ID: 3, Title: Computing Systems Research at VT
+Date: 0701250830, Length: 30, X: 30, Y: 10, Cost: 17
+Description: Seminar about the      Computing systems research at      VT
+Keywords: high_performance_computing, grids, VT, computer, science
 Delete FAILED -- There is no record with ID 6
 Record with ID 3 successfully deleted from the database
+Search FAILED -- There is no record with ID 6
+Search FAILED -- There is no record with ID 3
 Hashtable:
 1: 1
 2: 2

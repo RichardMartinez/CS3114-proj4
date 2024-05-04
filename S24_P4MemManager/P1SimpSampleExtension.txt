@@ -25,8 +25,14 @@ Learn what kind of    research is done on HPC  and CSE at VT
 print hashtable
 print blocks
 
+search 6
+search 3
+
 delete 6
 delete 3
+
+search 6
+search 3
 
 print hashtable
 print blocks

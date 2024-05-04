@@ -426,6 +426,11 @@ public class MemoryManager {
         // Double capacity
         int new_capacity = capacity * 2;
         
+        // Announce to console out
+        String out;
+        out = String.format("Memory pool expanded to %d bytes", new_capacity);
+        System.out.println(out);
+        
         // Create new size array
         byte[] new_memory = new byte[new_capacity];
         
