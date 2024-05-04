@@ -113,6 +113,22 @@ public class SemManagerTest extends TestCase {
         assertFuzzyEquals(referenceOutput, output);
     }
     
-    // TODO: Test capstone
+    /**
+     * Test the capstone files
+     * @throws IOException 
+     */
+    public void testCapstone() throws IOException {
+        String[] args = new String[3];
+        args[0] = "512";
+        args[1] = "8";
+        args[2] = "capstone_in.txt";
+
+        SemManager.main(args);
+        String output = systemOut().getHistory();
+        String referenceOutput = readFile("capstone_out.txt");
+
+        assertFuzzyEquals(referenceOutput, output);
+    }
+
 }
 

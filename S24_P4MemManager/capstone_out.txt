@@ -1,0 +1,185 @@
+Successfully inserted record with ID 1
+ID: 1, Title: Overview of HCI Research at VT
+Date: 0610051600, Length: 90, X: 10, Y: 10, Cost: 45
+Description: This seminar will present an overview of HCI research at VT
+Keywords: HCI, Computer_Science, VT, Virginia_Tech
+Size: 173
+Successfully inserted record with ID 2
+ID: 2, Title: Computational Biology and Bioinformatics in CS at Virginia Tech
+Date: 0610071600, Length: 60, X: 20, Y: 10, Cost: 30
+Description: Introduction to   bioinformatics and computation biology
+Keywords: Bioinformatics, computation_biology, Biology, Computer_Science, VT, Virginia_Tech
+Size: 244
+Memory pool expanded to 1024 bytes
+Successfully inserted record with ID 3
+ID: 3, Title: Computing Systems Research at VT
+Date: 0701250830, Length: 30, X: 30, Y: 10, Cost: 17
+Description: Seminar about the      Computing systems research at      VT
+Keywords: high_performance_computing, grids, VT, computer, science
+Size: 192
+Successfully inserted record with ID 10
+ID: 10, Title: Overview of HPC and CSE Research at VT
+Date: 0703301125, Length: 35, X: 0, Y: 0, Cost: 25
+Description: Learn what kind of    research is done on HPC  and CSE at VT
+Keywords: HPC, CSE, computer_science
+Size: 168
+Hashtable:
+1: 1
+2: 2
+3: 3
+5: 10
+total records: 4
+Freeblock List:
+There are no freeblocks in the memory pool
+Memory pool expanded to 2048 bytes
+Hash Table expanded to 16 records
+Successfully inserted record with ID 21
+ID: 21, Title: Richard Martinez's Special Seminar
+Date: 0123456789, Length: 10, X: 20, Y: 30, Cost: 40
+Description: This is the last project for this course. I had fun!
+Keywords: Spring2024, CS3114, Project4, Virginia, Tech
+Size: 174
+Hashtable:
+1: 1
+2: 2
+3: 3
+5: 21
+10: 10
+total records: 5
+Freeblock List:
+256: 1280 
+512: 1536 
+Found record with ID 21:
+ID: 21, Title: Richard Martinez's Special Seminar
+Date: 0123456789, Length: 10, X: 20, Y: 30, Cost: 40
+Description: This is the last project for this course. I had fun!
+Keywords: Spring2024, CS3114, Project4, Virginia, Tech
+Found record with ID 1:
+ID: 1, Title: Overview of HCI Research at VT
+Date: 0610051600, Length: 90, X: 10, Y: 10, Cost: 45
+Description: This seminar will present an overview of HCI research at VT
+Keywords: HCI, Computer_Science, VT, Virginia_Tech
+Search FAILED -- There is no record with ID 15
+Hashtable:
+1: 1
+2: 2
+3: 3
+5: 21
+10: 10
+total records: 5
+Freeblock List:
+256: 1280 
+512: 1536 
+Record with ID 1 successfully deleted from the database
+Record with ID 3 successfully deleted from the database
+Delete FAILED -- There is no record with ID 15
+Hashtable:
+1: TOMBSTONE
+2: 2
+3: TOMBSTONE
+5: 21
+10: 10
+total records: 3
+Freeblock List:
+256: 0 512 1280 
+512: 1536 
+Found record with ID 21:
+ID: 21, Title: Richard Martinez's Special Seminar
+Date: 0123456789, Length: 10, X: 20, Y: 30, Cost: 40
+Description: This is the last project for this course. I had fun!
+Keywords: Spring2024, CS3114, Project4, Virginia, Tech
+Search FAILED -- There is no record with ID 1
+Found record with ID 2:
+ID: 2, Title: Computational Biology and Bioinformatics in CS at Virginia Tech
+Date: 0610071600, Length: 60, X: 20, Y: 10, Cost: 30
+Description: Introduction to   bioinformatics and computation biology
+Keywords: Bioinformatics, computation_biology, Biology, Computer_Science, VT, Virginia_Tech
+Search FAILED -- There is no record with ID 3
+Found record with ID 10:
+ID: 10, Title: Overview of HPC and CSE Research at VT
+Date: 0703301125, Length: 35, X: 0, Y: 0, Cost: 25
+Description: Learn what kind of    research is done on HPC  and CSE at VT
+Keywords: HPC, CSE, computer_science
+Search FAILED -- There is no record with ID 15
+Insert FAILED - There is already a record with ID 21
+Successfully inserted record with ID 3
+ID: 3, Title: Richard Martinez's Special Seminar 3
+Date: 0123456789, Length: 10, X: 20, Y: 30, Cost: 40
+Description: This is a new record that re-uses a key that was deleted
+Keywords: Spring2024, CS3114, Project4, Virginia, Tech
+Size: 180
+Successfully inserted record with ID 27
+ID: 27, Title: 128 byte seminar
+Date: 0123456789, Length: 10, X: 20, Y: 30, Cost: 40
+Description: This is a 128 byte long seminar
+Keywords: Small
+Size: 96
+Successfully inserted record with ID 30
+ID: 30, Title: 512 byte seminar is a very large seminar object
+Date: 0123456789, Length: 10, X: 20, Y: 30, Cost: 40
+Description: This is a 512 byte long seminar and it is very big to make it 512 bytes ABCDEFGHIJKMLNOPQRSTUVWXYZ GOOOOOOOOOOOOO
+Keywords: Large, Very, Big, A, Bunch, of, Extra, Space, To, Get, 512, Bytes
+Size: 272
+Hashtable:
+1: TOMBSTONE
+2: 2
+3: 3
+5: 21
+10: 10
+11: 27
+14: 30
+total records: 6
+Freeblock List:
+128: 640 
+256: 1280 
+Search FAILED -- There is no record with ID 1
+Found record with ID 2:
+ID: 2, Title: Computational Biology and Bioinformatics in CS at Virginia Tech
+Date: 0610071600, Length: 60, X: 20, Y: 10, Cost: 30
+Description: Introduction to   bioinformatics and computation biology
+Keywords: Bioinformatics, computation_biology, Biology, Computer_Science, VT, Virginia_Tech
+Found record with ID 3:
+ID: 3, Title: Richard Martinez's Special Seminar 3
+Date: 0123456789, Length: 10, X: 20, Y: 30, Cost: 40
+Description: This is a new record that re-uses a key that was deleted
+Keywords: Spring2024, CS3114, Project4, Virginia, Tech
+Found record with ID 10:
+ID: 10, Title: Overview of HPC and CSE Research at VT
+Date: 0703301125, Length: 35, X: 0, Y: 0, Cost: 25
+Description: Learn what kind of    research is done on HPC  and CSE at VT
+Keywords: HPC, CSE, computer_science
+Found record with ID 21:
+ID: 21, Title: Richard Martinez's Special Seminar
+Date: 0123456789, Length: 10, X: 20, Y: 30, Cost: 40
+Description: This is the last project for this course. I had fun!
+Keywords: Spring2024, CS3114, Project4, Virginia, Tech
+Found record with ID 27:
+ID: 27, Title: 128 byte seminar
+Date: 0123456789, Length: 10, X: 20, Y: 30, Cost: 40
+Description: This is a 128 byte long seminar
+Keywords: Small
+Found record with ID 30:
+ID: 30, Title: 512 byte seminar is a very large seminar object
+Date: 0123456789, Length: 10, X: 20, Y: 30, Cost: 40
+Description: This is a 512 byte long seminar and it is very big to make it 512 bytes ABCDEFGHIJKMLNOPQRSTUVWXYZ GOOOOOOOOOOOOO
+Keywords: Large, Very, Big, A, Bunch, of, Extra, Space, To, Get, 512, Bytes
+Search FAILED -- There is no record with ID 15
+Delete FAILED -- There is no record with ID 1
+Record with ID 2 successfully deleted from the database
+Record with ID 3 successfully deleted from the database
+Record with ID 10 successfully deleted from the database
+Record with ID 21 successfully deleted from the database
+Record with ID 27 successfully deleted from the database
+Record with ID 30 successfully deleted from the database
+Delete FAILED -- There is no record with ID 15
+Hashtable:
+1: TOMBSTONE
+2: TOMBSTONE
+3: TOMBSTONE
+5: TOMBSTONE
+10: TOMBSTONE
+11: TOMBSTONE
+14: TOMBSTONE
+total records: 0
+Freeblock List:
+2048: 0

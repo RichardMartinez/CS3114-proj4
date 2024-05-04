@@ -1,0 +1,104 @@
+insert 1
+Overview of HCI Research at VT
+0610051600 90 10 10 45
+HCI Computer_Science VT Virginia_Tech
+This seminar will present an overview of HCI research at VT
+
+
+insert 2
+Computational Biology and Bioinformatics in CS at Virginia Tech
+      0610071600       60     20     10 30
+Bioinformatics computation_biology Biology Computer_Science VT Virginia_Tech
+    Introduction to   bioinformatics and computation biology
+insert 3
+Computing Systems Research at VT
+0701250830  30 30   10  17
+high_performance_computing           grids     VT computer science
+  Seminar about the      Computing systems research at      VT
+    
+insert 10
+Overview of HPC and CSE Research at VT
+0703301125     35        0  0                                           25
+      HPC      CSE      computer_science 
+Learn what kind of    research is done on HPC  and CSE at VT
+
+print hashtable
+print blocks
+
+insert 21
+Richard Martinez's Special Seminar
+0123456789 10 20 30 40
+Spring2024 CS3114 Project4 Virginia Tech
+This is the last project for this course. I had fun!
+
+print hashtable
+print blocks
+
+search 21
+search 1
+search 15
+
+print hashtable
+print blocks
+
+delete 1
+delete 3
+delete 15
+
+print hashtable
+print blocks
+
+search 21
+search 1
+search 2
+search 3
+search 10
+search 15
+
+insert 21
+Richard Martinez's Special Seminar 2
+0123456789 10 20 30 40
+Spring2024 CS3114 Project4 Virginia Tech
+This is a duplicate key and should fail to insert
+
+insert 3
+Richard Martinez's Special Seminar 3
+0123456789 10 20 30 40
+Spring2024 CS3114 Project4 Virginia Tech
+This is a new record that re-uses a key that was deleted
+
+insert 27
+128 byte seminar
+0123456789 10 20 30 40
+Small
+This is a 128 byte long seminar
+
+insert 30
+512 byte seminar is a very large seminar object
+0123456789 10 20 30 40
+Large Very Big A Bunch of Extra Space To Get 512 Bytes
+This is a 512 byte long seminar and it is very big to make it 512 bytes ABCDEFGHIJKMLNOPQRSTUVWXYZ GOOOOOOOOOOOOO
+
+print hashtable
+print blocks
+
+search 1
+search 2
+search 3
+search 10
+search 21
+search 27
+search 30
+search 15
+
+delete 1
+delete 2
+delete 3
+delete 10
+delete 21
+delete 27
+delete 30
+delete 15
+
+print hashtable
+print blocks
