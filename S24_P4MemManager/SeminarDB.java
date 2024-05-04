@@ -9,11 +9,10 @@ import java.io.IOException;
  */
 public class SeminarDB
 {
-    // private MemManager myMemman; // Implement Memory Manager class in a separate file
-    // private Hash myHashTable; // Implement Hash table class in a separate file
-    
+    // The hash table storing key (ID), value (Handle) pairs
     private HashTable table;
     
+    // The memory manager using a free block list
     private MemoryManager memory;
 
     /**
@@ -28,9 +27,7 @@ public class SeminarDB
     public SeminarDB(int initMemSize, int initHashSize)
         throws IOException
     {
-        // myMemman = new MemManager(initMemSize);
-        // myHashTable = new Hash(initHashSize);
-        
+        // Init both table and memory
         table = new HashTable(initHashSize);
         memory = new MemoryManager(initMemSize);
     }
@@ -52,61 +49,35 @@ public class SeminarDB
     public void insert(int sID, String stitle, String sdate, int slength,
         int sx, int sy, int scost, String[] skeywords, String sdesc)
         throws Exception
-    {
-        ///// TEMP
-//        Seminar sem = new Seminar(sID, stitle, sdate, slength, (short)sx, (short)sy, scost, skeywords, sdesc);
-//        byte[] serial = sem.serialize();
-//        
-//        System.out.println("Insert Seminar:");
-//        System.out.println(sem.toString());
-//        System.out.println("Size =");
-//        System.out.println(serial.length);
-        
-        Seminar sem = new Seminar(sID, stitle, sdate, slength, (short)sx, (short)sy, scost, skeywords, sdesc);
-        byte[] serial = sem.serialize();
-        
-        // Next time, get this from memory
-        Handle handle = null;
-        
-        boolean success;
-        success = table.insert(sID, handle);
-        
+    {   
         String out;
         
-        if (!success) {
-            // Insert FAILED - There is already a record with ID 3
+        // If ID already exists, FAIL
+        if (table.contains(sID)) {
+            // FAIL
             out = String.format("Insert FAILED - There is already a record with ID %d", sID);
             System.out.println(out);
             return;
         }
         
-        out = String.format("Successfully inserted record with ID %d", sID);
-        System.out.println(out);
-        
-        System.out.println(sem.toString());
-        
-        out = String.format("Size: %d", serial.length);
-        System.out.println(out);
-        
-        
-        /////
-        
-        
-        
-        //TODO: Implement this method
-        
-        // If ID already exists, FAIL
-        
         // Construct seminar object using params
-        
-        // Serialize into byte array
+        // Serialize to byte array
+        Seminar sem = new Seminar(sID, stitle, sdate, slength, (short)sx, (short)sy, scost, skeywords, sdesc);
+        byte[] serial = sem.serialize();
         
         // Insert into memory manager -> Handle
+        int size = serial.length;
+        Handle handle = memory.insert(serial, size);
         
         // Insert into hash table -> key = ID, value = Handle
+        table.insert(sID, handle);
         
-        // TEMP: Insert null handles for now
-        // table.insert(sID, null);
+        // SUCCESS
+        out = String.format("Successfully inserted record with ID %d", sID);
+        System.out.println(out);
+        System.out.println(sem.toString());
+        out = String.format("Size: %d", size);
+        System.out.println(out);
     }
 
     // ----------------------------------------------------------
@@ -120,25 +91,25 @@ public class SeminarDB
     {
         ///// TEMP
         
-        Handle handle;
-        handle = table.get(sID);
-        
-        boolean success;
-        success = table.remove(sID);
-        
-        String out;
-        
-        if (!success) {
-            // Delete FAILED -- There is no record with ID 6
-            out = String.format("Delete FAILED -- There is no record with ID %d", sID);
-            System.out.println(out);
-            return;
-        }
-        
-        // Here we know handle is valid
-        
-        out = String.format("Record with ID %d successfully deleted from the database", sID);
-        System.out.println(out);
+//        Handle handle;
+//        handle = table.get(sID);
+//        
+//        boolean success;
+//        success = table.remove(sID);
+//        
+//        String out;
+//        
+//        if (!success) {
+//            // Delete FAILED -- There is no record with ID 6
+//            out = String.format("Delete FAILED -- There is no record with ID %d", sID);
+//            System.out.println(out);
+//            return;
+//        }
+//        
+//        // Here we know handle is valid
+//        
+//        out = String.format("Record with ID %d successfully deleted from the database", sID);
+//        System.out.println(out);
         
         
         /////
@@ -185,8 +156,6 @@ public class SeminarDB
     public int hashprint()
         throws IOException
     {
-        //TODO: Implement this method
-        
         // Print all the stuff in the hash table
         table.print();
         
@@ -200,8 +169,7 @@ public class SeminarDB
      */
     public void memmanprint()
     {
-        //TODO: Implement this method
-        
         // Print the freelist
+        memory.print();
     }
 }

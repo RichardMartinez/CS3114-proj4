@@ -42,7 +42,7 @@ public class SemManager {
     public static void main(String[] args) throws IOException {
         // This is the main file for the program.
         // Seminar dum = new Seminar();
-        System.out.println("This is working MemManager!");
+        // System.out.println("This is working MemManager!");
 
         int initMemSize = Integer.parseInt(args[0]);
         int initHashSize = Integer.parseInt(args[1]);
